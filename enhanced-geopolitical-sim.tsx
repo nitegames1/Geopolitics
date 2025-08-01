@@ -1,6 +1,5 @@
 // @ts-nocheck
-import React, { useState, useEffect, useCallback, useMemo } from 'react';
-import { Calendar, Globe, Users, TrendingUp, AlertTriangle, Crown, Zap, Shield, MapPin, Database, Brain, Network, History, Settings, Save, Play, Pause, Eye } from 'lucide-react';
+
 
 // ==== PERSISTENT WORLD ENGINE ====
 class WorldEngine {
@@ -2179,5 +2178,3 @@ const AdvancedGeopoliticalSimulation = () => {
     </div>
   );
 };
-
-export default AdvancedGeopoliticalSimulation;
