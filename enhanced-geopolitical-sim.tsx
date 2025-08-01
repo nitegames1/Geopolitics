@@ -299,6 +299,7 @@ const AdvancedGeopoliticalSimulation = () => {
     turnEvents: [],
     // Enhanced National Stats
     player: {
+      nation: 'usa',
       leader: 'Franklin D. Roosevelt',
       government: 'democratic',
       legitimacy: 85,
@@ -1941,7 +1942,7 @@ const AdvancedGeopoliticalSimulation = () => {
     
     // Update game state based on decisions
     // Deep-clone state to avoid accidental mutations
-    let newState = JSON.parse(JSON.stringify(gameState));
+    let newState = structuredClone(gameState);
     
     // Apply decision effects
     Object.values(processedDecisions).forEach(decision => {
@@ -2022,6 +2023,7 @@ const AdvancedGeopoliticalSimulation = () => {
     const events = generateTurnContent(newState);
     newState.turnEvents = events;
     console.log('Turn events:', events);
+    worldEngine.state = newState;
 
     // Save to history
     if (autoSaveEnabled) {
