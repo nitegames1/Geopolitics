@@ -2209,3 +2209,5 @@ const AdvancedGeopoliticalSimulation = () => {
     </div>
   );
 };
+
+export default AdvancedGeopoliticalSimulation;
