@@ -6,6 +6,7 @@ class WorldEngine {
   state;
   history;
   divergencePoints;
+  // Map of butterfly effects keyed by turn number
   butterflyEffects;
   constructor(initialState) {
     this.state = initialState;
@@ -20,7 +21,8 @@ class WorldEngine {
     const effects = this.calculateCascadingEffects(decision);
     this.history.push({ turn, decision, effects, timestamp: Date.now() });
 
-    // Store subtle ripple effects for later analysis
+    // Store subtle ripple effects for later analysis so they can be reviewed
+    // when exploring alternate histories
     this.recordButterflyEffect(turn, { decision: decision.title, effects });
     
     // Check for major divergence
@@ -68,7 +70,8 @@ class WorldEngine {
     return nationActions;
   }
 
-  // Record butterfly effect information keyed by turn
+  // Record butterfly effect information keyed by turn. This allows the
+  // simulation to analyze how small choices ripple outward.
   recordButterflyEffect(turn, effect) {
     if (!this.butterflyEffects.has(turn)) {
       this.butterflyEffects.set(turn, []);
@@ -76,7 +79,8 @@ class WorldEngine {
     this.butterflyEffects.get(turn).push(effect);
   }
 
-  // Retrieve butterfly effects for a specific turn or all turns
+  // Retrieve butterfly effects for a specific turn or all turns. Returning an
+  // array makes it easy for UI panels to display historical ripples.
   getButterflyEffects(turn) {
     if (typeof turn === 'number') {
       return this.butterflyEffects.get(turn) || [];
