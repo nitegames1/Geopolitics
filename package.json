@@ -1,15 +1,17 @@
+
 {
   "name": "geopolitics",
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
+  "type": "module",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "start": "node server.js",
+    "dev": "python3 -m http.server 5000"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
-  "type": "commonjs",
   "dependencies": {
     "lucide-react": "^0.536.0",
     "react": "^19.1.1",

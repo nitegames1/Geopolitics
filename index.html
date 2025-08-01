@@ -9,10 +9,17 @@
     <script crossorigin src="https://unpkg.com/react@19/umd/react.development.js"></script>
     <script crossorigin src="https://unpkg.com/react-dom@19/umd/react-dom.development.js"></script>
     <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="index.css">
 </head>
 <body class="bg-slate-900">
     <div id="root"></div>
+    
     <script type="text/babel" src="enhanced-geopolitical-sim.tsx"></script>
-    <script type="text/babel" src="index.js"></script>
+    <script type="text/babel">
+        const { createRoot } = ReactDOM;
+        const container = document.getElementById('root');
+        const root = createRoot(container);
+        root.render(React.createElement(AdvancedGeopoliticalSimulation));
+    </script>
 </body>
 </html>

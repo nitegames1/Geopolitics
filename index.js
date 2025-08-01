@@ -1,10 +1,8 @@
 
-import React from 'react';
-import { createRoot } from 'react-dom/client';
-import AdvancedGeopoliticalSimulation from './enhanced-geopolitical-sim.tsx';
-import './index.css';
+const { useState, useEffect, useCallback, useMemo } = React;
 
-const container = document.getElementById('root');
-const root = createRoot(container);
+// Import your main component (this will be loaded from the tsx file via Babel)
+// The component will be available globally after the tsx file loads
 
-root.render(<AdvancedGeopoliticalSimulation />);
+// This file is now just to initialize the React app
+// The actual component code is in enhanced-geopolitical-sim.tsx
