@@ -1,17 +1,14 @@
-
 {
   "name": "geopolitics",
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
-  "type": "module",
-  "scripts": {
-    "start": "node server.js",
-    "dev": "node server.js"
+
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
+
   "dependencies": {
     "lucide-react": "^0.536.0",
     "react": "^19.1.1",

@@ -1,30 +1,12 @@
 // @ts-nocheck
-// Use React from global scope (loaded via CDN)
-const { useState, useEffect, useCallback, useMemo } = React;
 
-// Lucide React icons (using CDN fallback for icons)
-const Calendar = ({ className = "w-4 h-4", ...props }) => <svg className={className} {...props} fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" /></svg>;
-const Globe = ({ className = "w-4 h-4", ...props }) => <svg className={className} {...props} fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 12a9 9 0 01-9 9m9-9a9 9 0 00-9-9m9 9H3m9 9a9 9 0 01-9-9m9 9c1.657 0 3-4.03 3-9s-1.343-9-3-9m0 18c-1.657 0-3-4.03-3-9s1.343-9 3-9m-9 9a9 9 0 019-9" /></svg>;
-const Users = ({ className = "w-4 h-4", ...props }) => <svg className={className} {...props} fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-2.698" /></svg>;
-const TrendingUp = ({ className = "w-4 h-4", ...props }) => <svg className={className} {...props} fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6" /></svg>;
-const AlertTriangle = ({ className = "w-4 h-4", ...props }) => <svg className={className} {...props} fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-2.5L13.732 4c-.77-.833-1.964-.833-2.732 0L3.268 16.5c-.77.833.192 2.5 1.732 2.5z" /></svg>;
-const Crown = ({ className = "w-4 h-4", ...props }) => <svg className={className} {...props} fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 3l3.5 7L12 8l3.5 2L19 3v18H5V3z" /></svg>;
-const Shield = ({ className = "w-4 h-4", ...props }) => <svg className={className} {...props} fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" /></svg>;
-const MapPin = ({ className = "w-4 h-4", ...props }) => <svg className={className} {...props} fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" /><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" /></svg>;
-const Database = ({ className = "w-4 h-4", ...props }) => <svg className={className} {...props} fill="none" stroke="currentColor" viewBox="0 0 24 24"><ellipse cx="12" cy="5" rx="9" ry="3"/><path d="M21 12c0 1.66-4 3-9 3s-9-1.34-9-3"/><path d="M3 5v14c0 1.66 4 3 9 3s9-1.34 9-3V5"/></svg>;
-const Network = ({ className = "w-4 h-4", ...props }) => <svg className={className} {...props} fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5.636 18.364a9 9 0 010-12.728m12.728 0a9 9 0 010 12.728m-9.9-2.829a5 5 0 010-7.07m7.072 0a5 5 0 010 7.07M13 12a1 1 0 11-2 0 1 1 0 012 0z" /></svg>;
-const History = ({ className = "w-4 h-4", ...props }) => <svg className={className} {...props} fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>;
-const Settings = ({ className = "w-4 h-4", ...props }) => <svg className={className} {...props} fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z" /><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" /></svg>;
-const Save = ({ className = "w-4 h-4", ...props }) => <svg className={className} {...props} fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 7H5a2 2 0 00-2 2v9a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-3m-1 4l-3 3m0 0l-3-3m3 3V4" /></svg>;
-const Play = ({ className = "w-4 h-4", ...props }) => <svg className={className} {...props} fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M14.828 14.828a4 4 0 01-5.656 0M9 10h1m4 0h1m-6 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>;
-const Pause = ({ className = "w-4 h-4", ...props }) => <svg className={className} {...props} fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 9v6m4-6v6m7-3a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>;
-const Eye = ({ className = "w-4 h-4", ...props }) => <svg className={className} {...props} fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" /><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" /></svg>;
 
 // ==== PERSISTENT WORLD ENGINE ====
 class WorldEngine {
   state;
   history;
   divergencePoints;
+  // Map of butterfly effects keyed by turn number
   butterflyEffects;
   constructor(initialState) {
     this.state = initialState;
@@ -38,6 +20,10 @@ class WorldEngine {
   recordDecision(decision, turn) {
     const effects = this.calculateCascadingEffects(decision);
     this.history.push({ turn, decision, effects, timestamp: Date.now() });
+
+    // Store subtle ripple effects for later analysis so they can be reviewed
+    // when exploring alternate histories
+    this.recordButterflyEffect(turn, { decision: decision.title, effects });
     
     // Check for major divergence
     if (effects.divergenceScore > 50) {
@@ -82,6 +68,24 @@ class WorldEngine {
     });
 
     return nationActions;
+  }
+
+  // Record butterfly effect information keyed by turn. This allows the
+  // simulation to analyze how small choices ripple outward.
+  recordButterflyEffect(turn, effect) {
+    if (!this.butterflyEffects.has(turn)) {
+      this.butterflyEffects.set(turn, []);
+    }
+    this.butterflyEffects.get(turn).push(effect);
+  }
+
+  // Retrieve butterfly effects for a specific turn or all turns. Returning an
+  // array makes it easy for UI panels to display historical ripples.
+  getButterflyEffects(turn) {
+    if (typeof turn === 'number') {
+      return this.butterflyEffects.get(turn) || [];
+    }
+    return Array.from(this.butterflyEffects.entries()).map(([t, effects]) => ({ turn: t, effects }));
   }
 }
 
@@ -987,6 +991,7 @@ const AdvancedGeopoliticalSimulation = () => {
         <WorldSituationPanel />
         <ActiveCrisesPanel />
         <IntelligenceReportsPanel />
+        <RecentEventsPanel />
       </div>
       
       {/* National Status */}
@@ -1398,10 +1403,29 @@ const AdvancedGeopoliticalSimulation = () => {
     </div>
   );
 
+  const RecentEventsPanel = () => (
+    <div className="bg-gray-800 rounded-lg p-6">
+      <h2 className="text-xl font-bold mb-4 text-blue-400 flex items-center">
+        <Zap className="w-5 h-5 mr-2" />
+        Recent Events
+      </h2>
+      {gameState.turnEvents.length === 0 ? (
+        <div className="text-gray-400">No notable events this turn.</div>
+      ) : (
+        <ul className="space-y-2 text-sm">
+          {gameState.turnEvents.map((evt, idx) => (
+            <li key={idx} className="bg-gray-700 rounded p-3">
+              <div className="font-bold text-white">{evt.content.title}</div>
+              <div className="text-gray-300">{evt.content.description}</div>
+            </li>
+          ))}
+        </ul>
+      )}
+    </div>
+  );
+
   // ==== DECISION VIEW ====
-  const DecisionView = () => {
-    const worldAnalysis = useMemo(() => analyzeComplexWorldState(gameState), [gameState]);
-    const decisions = useMemo(() => generateDecisions(gameState, worldAnalysis), [gameState, worldAnalysis]);
+  const DecisionView = ({ decisions }) => {
     
     return (
       <div className="space-y-6">
@@ -1418,10 +1442,15 @@ const AdvancedGeopoliticalSimulation = () => {
             category={category}
             decision={decision}
             selected={selectedDecisions[category]}
-            onSelect={(optionId) => setSelectedDecisions(prev => ({
-              ...prev,
-              [category]: optionId
-            }))}
+            onSelect={(optionId) =>
+              setSelectedDecisions(prev => {
+                if (prev[category] === optionId) {
+                  const { [category]: _, ...rest } = prev;
+                  return rest;
+                }
+                return { ...prev, [category]: optionId };
+              })
+            }
           />
         ))}
       </div>
@@ -2022,7 +2051,7 @@ const AdvancedGeopoliticalSimulation = () => {
     // Generate events and store for this turn
     const events = generateTurnContent(newState);
     newState.turnEvents = events;
-    console.log('Turn events:', events);
+    if (DEBUG) console.log('Turn events:', events);
     worldEngine.state = newState;
 
     // Save to history
@@ -2043,13 +2072,18 @@ const AdvancedGeopoliticalSimulation = () => {
     };
     
     // In a real implementation, this would save to a backend
-    console.log('Game saved:', saveData);
+    if (DEBUG) console.log('Game saved:', saveData);
   };
 
-  const decisions = useMemo(() => {
-    const worldAnalysis = analyzeComplexWorldState(gameState);
-    return generateDecisions(gameState, worldAnalysis);
-  }, [gameState, generateDecisions]);
+  const worldAnalysis = useMemo(
+    () => analyzeComplexWorldState(gameState),
+    [gameState]
+  );
+
+  const decisions = useMemo(
+    () => generateDecisions(gameState, worldAnalysis),
+    [gameState, worldAnalysis, generateDecisions]
+  );
 
   // Main render
   return (
@@ -2130,7 +2164,7 @@ const AdvancedGeopoliticalSimulation = () => {
       {/* Main Content */}
       <div className="max-w-7xl mx-auto p-6">
         {currentView === 'dashboard' && <DashboardView />}
-        {currentView === 'decisions' && <DecisionView />}
+        {currentView === 'decisions' && <DecisionView decisions={decisions} />}
         {currentView === 'timeline' && (
           <div className="bg-gray-800 rounded-lg p-6">
             <h2 className="text-2xl font-bold mb-4">Timeline View - Coming Soon</h2>
@@ -2175,6 +2209,3 @@ const AdvancedGeopoliticalSimulation = () => {
     </div>
   );
 };
-
-// Make component available globally
-window.AdvancedGeopoliticalSimulation = AdvancedGeopoliticalSimulation;
