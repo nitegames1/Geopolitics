@@ -38,6 +38,9 @@ class WorldEngine {
   recordDecision(decision, turn) {
     const effects = this.calculateCascadingEffects(decision);
     this.history.push({ turn, decision, effects, timestamp: Date.now() });
+
+    // Store subtle ripple effects for later analysis
+    this.recordButterflyEffect(turn, { decision: decision.title, effects });
     
     // Check for major divergence
     if (effects.divergenceScore > 50) {
@@ -82,6 +85,22 @@ class WorldEngine {
     });
 
     return nationActions;
+  }
+
+  // Record butterfly effect information keyed by turn
+  recordButterflyEffect(turn, effect) {
+    if (!this.butterflyEffects.has(turn)) {
+      this.butterflyEffects.set(turn, []);
+    }
+    this.butterflyEffects.get(turn).push(effect);
+  }
+
+  // Retrieve butterfly effects for a specific turn or all turns
+  getButterflyEffects(turn) {
+    if (typeof turn === 'number') {
+      return this.butterflyEffects.get(turn) || [];
+    }
+    return Array.from(this.butterflyEffects.entries()).map(([t, effects]) => ({ turn: t, effects }));
   }
 }
 
