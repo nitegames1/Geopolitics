@@ -2025,7 +2025,7 @@ const AdvancedGeopoliticalSimulation = () => {
     // Generate events and store for this turn
     const events = generateTurnContent(newState);
     newState.turnEvents = events;
-    console.log('Turn events:', events);
+    if (DEBUG) console.log('Turn events:', events);
     worldEngine.state = newState;
 
     // Save to history
@@ -2046,7 +2046,7 @@ const AdvancedGeopoliticalSimulation = () => {
     };
     
     // In a real implementation, this would save to a backend
-    console.log('Game saved:', saveData);
+    if (DEBUG) console.log('Game saved:', saveData);
   };
 
   const decisions = useMemo(() => {
