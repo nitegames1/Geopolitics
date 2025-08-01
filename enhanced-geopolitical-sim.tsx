@@ -1442,10 +1442,15 @@ const AdvancedGeopoliticalSimulation = () => {
             category={category}
             decision={decision}
             selected={selectedDecisions[category]}
-            onSelect={(optionId) => setSelectedDecisions(prev => ({
-              ...prev,
-              [category]: optionId
-            }))}
+            onSelect={(optionId) =>
+              setSelectedDecisions(prev => {
+                if (prev[category] === optionId) {
+                  const { [category]: _, ...rest } = prev;
+                  return rest;
+                }
+                return { ...prev, [category]: optionId };
+              })
+            }
           />
         ))}
       </div>
