@@ -1,10 +1,6 @@
 {
   "name": "geopolitics",
   "version": "1.0.0",
-  "scripts": {
-    "dev": "vite",
-    "build": "vite build"
-    },
   "description": "",
   "scripts": {
     "dev": "vite",
