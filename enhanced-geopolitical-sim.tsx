@@ -3,9 +3,7 @@
 const { useState, useEffect, useCallback, useMemo } = React;
 
 // Lucide React icons (using CDN fallback for icons)
-const Calendar = ({ className = "w-4 h-4", ...props }) => <svg className={className} {...props} fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" /></svg>;
 const Globe = ({ className = "w-4 h-4", ...props }) => <svg className={className} {...props} fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 12a9 9 0 01-9 9m9-9a9 9 0 00-9-9m9 9H3m9 9a9 9 0 01-9-9m9 9c1.657 0 3-4.03 3-9s-1.343-9-3-9m0 18c-1.657 0-3-4.03-3-9s1.343-9 3-9m-9 9a9 9 0 019-9" /></svg>;
-const Users = ({ className = "w-4 h-4", ...props }) => <svg className={className} {...props} fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-2.698" /></svg>;
 const TrendingUp = ({ className = "w-4 h-4", ...props }) => <svg className={className} {...props} fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6" /></svg>;
 const AlertTriangle = ({ className = "w-4 h-4", ...props }) => <svg className={className} {...props} fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-2.5L13.732 4c-.77-.833-1.964-.833-2.732 0L3.268 16.5c-.77.833.192 2.5 1.732 2.5z" /></svg>;
 const Crown = ({ className = "w-4 h-4", ...props }) => <svg className={className} {...props} fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 3l3.5 7L12 8l3.5 2L19 3v18H5V3z" /></svg>;
@@ -19,6 +17,7 @@ const Save = ({ className = "w-4 h-4", ...props }) => <svg className={className}
 const Play = ({ className = "w-4 h-4", ...props }) => <svg className={className} {...props} fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M14.828 14.828a4 4 0 01-5.656 0M9 10h1m4 0h1m-6 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>;
 const Pause = ({ className = "w-4 h-4", ...props }) => <svg className={className} {...props} fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 9v6m4-6v6m7-3a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>;
 const Eye = ({ className = "w-4 h-4", ...props }) => <svg className={className} {...props} fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" /><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" /></svg>;
+const DEBUG = false;
 
 // ==== PERSISTENT WORLD ENGINE ====
 class WorldEngine {
@@ -2022,7 +2021,7 @@ const AdvancedGeopoliticalSimulation = () => {
     // Generate events and store for this turn
     const events = generateTurnContent(newState);
     newState.turnEvents = events;
-    console.log('Turn events:', events);
+    if (DEBUG) console.log('Turn events:', events);
     worldEngine.state = newState;
 
     // Save to history
@@ -2043,7 +2042,7 @@ const AdvancedGeopoliticalSimulation = () => {
     };
     
     // In a real implementation, this would save to a backend
-    console.log('Game saved:', saveData);
+    if (DEBUG) console.log('Game saved:', saveData);
   };
 
   const decisions = useMemo(() => {
