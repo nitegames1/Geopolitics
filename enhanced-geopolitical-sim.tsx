@@ -1,13 +1,19 @@
+// @ts-nocheck
 import React, { useState, useEffect, useCallback, useMemo } from 'react';
 import { Calendar, Globe, Users, TrendingUp, AlertTriangle, Crown, Zap, Shield, MapPin, Database, Brain, Network, History, Settings, Save, Play, Pause, Eye } from 'lucide-react';
 
 // ==== PERSISTENT WORLD ENGINE ====
 class WorldEngine {
+  state;
+  history;
+  divergencePoints;
+  butterflyEffects;
   constructor(initialState) {
     this.state = initialState;
     this.history = [];
     this.divergencePoints = [];
-    this.butterlyEffects = new Map();
+    // Track subtle historical ripples caused by player choices
+    this.butterflyEffects = new Map();
   }
 
   // Track how decisions cascade through time
@@ -63,6 +69,10 @@ class WorldEngine {
 
 // ==== NATION AI SYSTEM ====
 class NationAI {
+  nation;
+  data;
+  worldState;
+  personality;
   constructor(nation, data, worldState) {
     this.nation = nation;
     this.data = data;
@@ -218,19 +228,36 @@ class NationAI {
   }
 
   findPotentialAllies() {
-    return [];
+    const relations = this.worldState.relationships[this.nation] ||
+      this.worldState.relationships.usa || {};
+
+    return Object.entries(relations)
+      .filter(([name, rel]) => name !== this.nation && rel.value > 60)
+      .map(([name]) => ({ name, data: this.worldState.nations[name] }));
   }
 
   calculateMutualBenefit(ally) {
-    return 50;
+    const relation = (this.worldState.relationships[this.nation] || {})[ally.name] ||
+      (this.worldState.relationships[ally.name] || {})[this.nation] ||
+      { value: 50 };
+    const economyScore =
+      ((this.data.economy.gdp || 0) + (ally.data?.economy?.gdp || 0)) / 20;
+    return Math.min(100, (relation.value + economyScore) / 2);
   }
 
   calculateSuccessProbability(target) {
-    return 50;
+    const relation = (this.worldState.relationships[this.nation] || {})[target.name] ||
+      { value: 50 };
+    const balance = this.data.military.totalStrength /
+      (target.data?.military?.totalStrength || 1);
+    let score = 50 + (balance - 1) * 20 - (relation.value - 50) * 0.5;
+    return Math.max(5, Math.min(95, score));
   }
 
   countHostileNeighbors() {
-    return 0;
+    const relations = this.worldState.relationships[this.nation] ||
+      this.worldState.relationships.usa || {};
+    return Object.values(relations).filter(rel => rel.value < 40).length;
   }
 
   handleInternalCrisis() {
@@ -251,6 +278,7 @@ const AdvancedGeopoliticalSimulation = () => {
     month: 1,
     turn: 1,
     
+    turnEvents: [],
     // Enhanced National Stats
     player: {
       nation: 'usa',
@@ -941,6 +969,7 @@ const AdvancedGeopoliticalSimulation = () => {
         <WorldSituationPanel />
         <ActiveCrisesPanel />
         <IntelligenceReportsPanel />
+        <RecentEventsPanel />
       </div>
       
       {/* National Status */}
@@ -1349,6 +1378,27 @@ const AdvancedGeopoliticalSimulation = () => {
           End Turn ({Object.keys(selectedDecisions).length}/2)
         </button>
       </div>
+    </div>
+  );
+
+  const RecentEventsPanel = () => (
+    <div className="bg-gray-800 rounded-lg p-6">
+      <h2 className="text-xl font-bold mb-4 text-blue-400 flex items-center">
+        <Zap className="w-5 h-5 mr-2" />
+        Recent Events
+      </h2>
+      {gameState.turnEvents.length === 0 ? (
+        <div className="text-gray-400">No notable events this turn.</div>
+      ) : (
+        <ul className="space-y-2 text-sm">
+          {gameState.turnEvents.map((evt, idx) => (
+            <li key={idx} className="bg-gray-700 rounded p-3">
+              <div className="font-bold text-white">{evt.content.title}</div>
+              <div className="text-gray-300">{evt.content.description}</div>
+            </li>
+          ))}
+        </ul>
+      )}
     </div>
   );
 
@@ -1895,7 +1945,8 @@ const AdvancedGeopoliticalSimulation = () => {
     });
     
     // Update game state based on decisions
-    let newState = { ...gameState };
+    // Deep-clone state to avoid accidental mutations
+    let newState = structuredClone(gameState);
     
     // Apply decision effects
     Object.values(processedDecisions).forEach(decision => {
@@ -1953,11 +2004,12 @@ const AdvancedGeopoliticalSimulation = () => {
     })).filter(crisis => crisis.time_pressure > 0);
     
     // Check for new crises
-    newState.crises.potential.forEach(potential => {
-      const shouldTrigger = Math.random() * 100 < potential.probability;
-      if (shouldTrigger && 
-          newState.year >= potential.earliest_date.year &&
-          newState.month >= potential.earliest_date.month) {
+    newState.crises.potential = newState.crises.potential.filter(potential => {
+      const shouldTrigger = Math.random() * 100 < potential.probability &&
+        newState.year >= potential.earliest_date.year &&
+        newState.month >= potential.earliest_date.month;
+
+      if (shouldTrigger) {
         newState.crises.active.push({
           id: potential.id,
           type: 'emerging',
@@ -1966,9 +2018,17 @@ const AdvancedGeopoliticalSimulation = () => {
           participants: [],
           time_pressure: 10
         });
+        return false; // remove from potential list
       }
+      return true;
     });
-    
+
+    // Generate events and store for this turn
+    const events = generateTurnContent(newState);
+    newState.turnEvents = events;
+    console.log('Turn events:', events);
+    worldEngine.state = newState;
+
     // Save to history
     if (autoSaveEnabled) {
       saveGameState(newState);
