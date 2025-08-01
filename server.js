@@ -27,7 +27,7 @@ const server = createServer((req, res) => {
     
     res.writeHead(200, { 'Content-Type': contentType });
     res.end(content);
-  } catch (error) {
+  } catch (_error) {
     res.writeHead(404);
     res.end('File not found');
   }
