@@ -1399,9 +1399,7 @@ const AdvancedGeopoliticalSimulation = () => {
   );
 
   // ==== DECISION VIEW ====
-  const DecisionView = () => {
-    const worldAnalysis = useMemo(() => analyzeComplexWorldState(gameState), [gameState]);
-    const decisions = useMemo(() => generateDecisions(gameState, worldAnalysis), [gameState, worldAnalysis]);
+  const DecisionView = ({ decisions }) => {
     
     return (
       <div className="space-y-6">
@@ -2046,10 +2044,15 @@ const AdvancedGeopoliticalSimulation = () => {
     console.log('Game saved:', saveData);
   };
 
-  const decisions = useMemo(() => {
-    const worldAnalysis = analyzeComplexWorldState(gameState);
-    return generateDecisions(gameState, worldAnalysis);
-  }, [gameState, generateDecisions]);
+  const worldAnalysis = useMemo(
+    () => analyzeComplexWorldState(gameState),
+    [gameState]
+  );
+
+  const decisions = useMemo(
+    () => generateDecisions(gameState, worldAnalysis),
+    [gameState, worldAnalysis, generateDecisions]
+  );
 
   // Main render
   return (
@@ -2130,7 +2133,7 @@ const AdvancedGeopoliticalSimulation = () => {
       {/* Main Content */}
       <div className="max-w-7xl mx-auto p-6">
         {currentView === 'dashboard' && <DashboardView />}
-        {currentView === 'decisions' && <DecisionView />}
+        {currentView === 'decisions' && <DecisionView decisions={decisions} />}
         {currentView === 'timeline' && (
           <div className="bg-gray-800 rounded-lg p-6">
             <h2 className="text-2xl font-bold mb-4">Timeline View - Coming Soon</h2>
