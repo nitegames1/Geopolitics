@@ -969,6 +969,7 @@ const AdvancedGeopoliticalSimulation = () => {
         <WorldSituationPanel />
         <ActiveCrisesPanel />
         <IntelligenceReportsPanel />
+        <RecentEventsPanel />
       </div>
       
       {/* National Status */}
@@ -1377,6 +1378,27 @@ const AdvancedGeopoliticalSimulation = () => {
           End Turn ({Object.keys(selectedDecisions).length}/2)
         </button>
       </div>
+    </div>
+  );
+
+  const RecentEventsPanel = () => (
+    <div className="bg-gray-800 rounded-lg p-6">
+      <h2 className="text-xl font-bold mb-4 text-blue-400 flex items-center">
+        <Zap className="w-5 h-5 mr-2" />
+        Recent Events
+      </h2>
+      {gameState.turnEvents.length === 0 ? (
+        <div className="text-gray-400">No notable events this turn.</div>
+      ) : (
+        <ul className="space-y-2 text-sm">
+          {gameState.turnEvents.map((evt, idx) => (
+            <li key={idx} className="bg-gray-700 rounded p-3">
+              <div className="font-bold text-white">{evt.content.title}</div>
+              <div className="text-gray-300">{evt.content.description}</div>
+            </li>
+          ))}
+        </ul>
+      )}
     </div>
   );
 
