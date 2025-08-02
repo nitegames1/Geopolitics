@@ -1,5 +1,8 @@
 import React, { useState, useEffect } from 'react';
 
+// Toggle debug logging throughout the simulation
+const DEBUG = false;
+
 export default function EnhancedGeopoliticalSim() {
   return (
     <div>
