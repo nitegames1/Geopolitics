@@ -1,14 +1,9 @@
 {
   "compilerOptions": {
     "target": "es2020",
-
-    "module": "es2020",
-    "jsx": "react",
-
     "module": "esnext",
     "moduleResolution": "node",
     "jsx": "react-jsx",
-main
     "esModuleInterop": true,
     "forceConsistentCasingInFileNames": true,
     "strict": false,

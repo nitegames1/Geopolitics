@@ -4,10 +4,9 @@ import react from '@vitejs/plugin-react'
 export default defineConfig({
   base: '/Geopolitics/', // must match your repo name
   plugins: [react()],
-
   test: {
     environment: 'node'
-
+  },
   build: {
     rollupOptions: {
       input: {
@@ -15,6 +14,5 @@ export default defineConfig({
         lore: 'lore.html',
       },
     },
-main
   },
 })
