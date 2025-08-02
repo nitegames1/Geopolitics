@@ -1,9 +1,5 @@
 import React, { useState } from 'react'
-
 import { initialLeaders } from './leaders'
-
-import { initialLeaders } from './App'
- main
 
 export default function Lore() {
   const [selected, setSelected] = useState<string>('')
