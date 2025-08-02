@@ -1,6 +1,21 @@
 import React, { useState, useEffect } from 'react';
 
 
+// Toggle debug logging throughout the simulation
+const DEBUG = false;
+
+export default function EnhancedGeopoliticalSim() {
+  return (
+    <div>
+      <h1>Enhanced Geopolitical Sim</h1>
+      {/* Add more UI elements here */}
+    </div>
+  );
+}
+
+
+ main
+
 
 // ==== PERSISTENT WORLD ENGINE ====
 class WorldEngine {
