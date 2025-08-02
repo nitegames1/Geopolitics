@@ -1,4 +1,246 @@
+
+import React, { useState, useEffect, useCallback, useMemo } from 'react';
+
+// Historical event data keyed by YYYY-MM
+interface HistoricalEvent {
+  id: string;
+  date: string;
+  title: string;
+  description: string;
+  category: 'domestic' | 'diplomatic' | 'military' | 'political' | 'economic';
+  importance: number; // 1-100 scale used for scenario priority
+  decision?: {
+    id: string;
+    title: string;
+    description: string;
+    consequences: string[];
+    category: 'domestic' | 'diplomatic';
+    historical_note?: string;
+  };
+  historical?: boolean; // true for factual events, false for speculative
+}
+
+const HISTORICAL_EVENTS: Record<string, HistoricalEvent[]> = {
+  '1936-01': [
+    {
+      id: 'spanish_popular_front_forms',
+      date: '1936-01-03',
+      title: 'Spanish Popular Front Forms',
+      description:
+        'Left-wing parties in Spain unite ahead of February elections, intensifying political polarization.',
+      category: 'political',
+      importance: 55
+    },
+    {
+      id: 'aaa_struck_down',
+      date: '1936-01-06',
+      title: 'Supreme Court Strikes Down the AAA',
+      description:
+        'United States v. Butler declares the Agricultural Adjustment Act unconstitutional, challenging New Deal farm policies.',
+      category: 'domestic',
+      importance: 80,
+      decision: {
+        id: 'aaa_response',
+        title: 'Respond to AAA Ruling',
+        description:
+          'Supreme Court invalidates the Agricultural Adjustment Act; craft a new approach to farm relief.',
+        consequences: ['Farm sector uncertainty', 'New Deal opposition grows'],
+        category: 'domestic',
+        historical_note: 'United States v. Butler struck down the AAA on Jan 6, 1936.'
+      }
+    },
+    {
+      id: 'japan_military_expansion',
+      date: '1936-01-15',
+      title: 'Japanese Diet Approves Military Expansion',
+      description:
+        'Japan increases military spending, signalling the growing power of militarists in Tokyo.',
+      category: 'military',
+      importance: 70
+    },
+    {
+      id: 'edward_viii_ascends',
+      date: '1936-01-20',
+      title: 'King George V Dies, Edward VIII Becomes King',
+      description:
+        'British monarch George V passes away and his son Edward VIII ascends the throne, creating uncertainty within Europe.',
+      category: 'political',
+      importance: 65
+    },
+    {
+      id: 'sarraut_french_government',
+      date: '1936-01-24',
+      title: 'Albert Sarraut Forms New French Government',
+      description:
+        'Following the fall of Pierre Laval, Albert Sarraut becomes Prime Minister, signaling shifts in French policy.',
+      category: 'political',
+      importance: 50
+    },
+    {
+      id: 'second_london_naval_treaty',
+      date: '1936-01-25',
+      title: 'Second London Naval Treaty Signed',
+      description:
+        'United States, Britain, and France agree to limit naval armaments; Italy and Japan refuse to sign.',
+      category: 'diplomatic',
+      importance: 75,
+      decision: {
+        id: 'naval_treaty_ratification',
+        title: 'Ratify Second London Naval Treaty',
+        description:
+          'Commit to naval limitations alongside Britain and France.',
+        consequences: ['Naval limits accepted', 'International cooperation', 'May hinder rearmament'],
+        category: 'diplomatic',
+        historical_note:
+          'The Second London Naval Treaty was signed January 25, 1936, without Italy or Japan.'
+      }
+    }
+  ],
+  '1936-02': [
+    {
+      id: 'winter_olympics_open',
+      date: '1936-02-06',
+      title: 'Winter Olympics Open in Germany',
+      description:
+        'The 1936 Winter Games begin in Garmisch-Partenkirchen, providing a propaganda stage for the Nazi regime.',
+      category: 'diplomatic',
+      importance: 40
+    },
+    {
+      id: 'spanish_election_popular_front',
+      date: '1936-02-16',
+      title: 'Popular Front Wins Spanish Election',
+      description:
+        'Leftist coalition secures a narrow victory, deepening tensions that will soon lead to civil war.',
+      category: 'political',
+      importance: 65
+    },
+    {
+      id: 'japan_feb26_incident',
+      date: '1936-02-26',
+      title: 'Japanese Officers Launch February 26 Coup',
+      description:
+        'Young Imperial Army officers attempt a coup in Tokyo, assassinating officials but ultimately failing.',
+      category: 'military',
+      importance: 70
+    },
+    {
+      id: 'italy_advances_ethiopia',
+      date: '1936-02-29',
+      title: 'Italian Forces Advance in Ethiopia',
+      description:
+        'Italian troops capture key highlands as the conflict in East Africa intensifies.',
+      category: 'military',
+      importance: 60
+    }
+  ]
+};
+
+// Templates for plausible ahistorical events the AI can elaborate upon
+const PLAUSIBLE_EVENT_TEMPLATES: Omit<HistoricalEvent, 'date'>[] = [
+  {
+    id: 'midwest_drought',
+    title: 'Midwestern Drought Worsens',
+    description: 'Dry conditions raise Dust Bowl fears and pressure farm incomes.',
+    category: 'economic',
+    importance: 45
+  },
+  {
+    id: 'harlem_renaissance_march',
+    title: 'Harlem Renaissance Cultural March',
+    description: 'African American artists plan a march to demand federal arts support.',
+    category: 'domestic',
+    importance: 35
+  },
+  {
+    id: 'pacific_naval_maneuvers',
+    title: 'U.S. Navy Plans Pacific Maneuvers',
+    description: 'Exercises in Hawaii aim to deter Japanese ambitions in the Pacific.',
+    category: 'military',
+    importance: 50
+  }
+];
+
+// Use generative AI (if available) to expand templates into richer events
+const generatePlausibleEvents = async (
+  year: number,
+  month: number
+): Promise<HistoricalEvent[]> => {
+  // Attempt to call a generative model for more detailed events
+  if (typeof fetch !== 'undefined' && process?.env?.OPENAI_API_KEY) {
+    try {
+      const prompt =
+        'Generate one plausible but non-historical geopolitical event for ' +
+        `${year}-${String(month).padStart(2, '0')} as JSON array with fields id,title,description,category,importance.`;
+      const response = await fetch('https://api.openai.com/v1/chat/completions', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${process.env.OPENAI_API_KEY}`
+        },
+        body: JSON.stringify({
+          model: 'gpt-4o-mini',
+          messages: [{ role: 'user', content: prompt }]
+        })
+      });
+      const data = await response.json();
+      const text = data.choices?.[0]?.message?.content?.trim();
+      if (text) {
+        const parsed = JSON.parse(text);
+        return parsed.map((evt) => ({
+          ...evt,
+          date: `${year}-${String(month).padStart(2, '0')}-15`,
+          historical: false
+        }));
+      }
+    } catch (err) {
+      console.warn('AI generation failed, using templates', err);
+    }
+  }
+
+  // Fallback: select a random template and stamp it with the current date
+  const template =
+    PLAUSIBLE_EVENT_TEMPLATES[
+      Math.floor(Math.random() * PLAUSIBLE_EVENT_TEMPLATES.length)
+    ];
+  return [
+    {
+      ...template,
+      id: `${template.id}_${year}_${month}`,
+      date: `${year}-${String(month).padStart(2, '0')}-15`,
+      historical: false
+    }
+  ];
+};
+
+const getHistoricalEvents = (year: number, month: number): HistoricalEvent[] => {
+  const key = `${year}-${String(month).padStart(2, '0')}`;
+  return HISTORICAL_EVENTS[key] || [];
+};
+
+// Pre-generate event schedule between given years
+const preScheduleEvents = async (
+  startYear: number,
+  endYear: number
+): Promise<Record<string, HistoricalEvent[]>> => {
+  const schedule: Record<string, HistoricalEvent[]> = {};
+  for (let y = startYear; y <= endYear; y++) {
+    for (let m = 1; m <= 12; m++) {
+      const key = `${y}-${String(m).padStart(2, '0')}`;
+      const historical = getHistoricalEvents(y, m).map((evt) => ({
+        ...evt,
+        historical: true
+      }));
+      const speculative = await generatePlausibleEvents(y, m);
+      speculative.forEach((e) => (e.historical = false));
+      schedule[key] = [...historical, ...speculative];
+    }
+  }
+  return schedule;
+};
+
 import React, { useState, useEffect } from 'react';
+main
 
 
 // Toggle debug logging throughout the simulation
@@ -315,8 +557,10 @@ const AdvancedGeopoliticalSimulation = () => {
     year: 1936,
     month: 1,
     turn: 1,
-    
+
     turnEvents: [],
+    triggeredEvents: [],
+    eventSchedule: {},
     // Enhanced National Stats
     player: {
       nation: 'usa',
@@ -739,23 +983,61 @@ const AdvancedGeopoliticalSimulation = () => {
   const [selectedDecisions, setSelectedDecisions] = useState({});
   const [detailView, setDetailView] = useState(null);
 
+  // Pre-schedule events up to 1956
+  useEffect(() => {
+    (async () => {
+      const schedule = await preScheduleEvents(1936, 1956);
+      setGameState((prev) => ({ ...prev, eventSchedule: schedule }));
+    })();
+  }, []);
+
   // ==== ENHANCED TURN GENERATION ====
-  const generateTurnContent = useCallback((state, precomputedAnalysis?) => {
-    const scenarios = [];
-    // Reuse analysis if provided to avoid redundant heavy calculations
-    const worldAnalysis = precomputedAnalysis || analyzeComplexWorldState(state);
-    
-    // Generate scenarios based on comprehensive world analysis
-    scenarios.push(...generateCrisisScenarios(state, worldAnalysis));
-    scenarios.push(...generateOpportunityScenarios(state, worldAnalysis));
-    scenarios.push(...generateEmergentScenarios(state, worldAnalysis));
-    
-    // AI nations make their moves
-    const aiActions = worldEngine.simulateOtherNations(state);
-    scenarios.push(...processAIActions(aiActions, state));
-    
-    return prioritizeScenarios(scenarios, state, worldAnalysis);
-  }, [worldEngine]);
+  const generateTurnContent = useCallback(
+    async (state, precomputedAnalysis?) => {
+      const scenarios = [];
+      // Reuse analysis if provided to avoid redundant heavy calculations
+      const worldAnalysis =
+        precomputedAnalysis || analyzeComplexWorldState(state);
+
+      // Generate scenarios based on comprehensive world analysis
+      scenarios.push(...generateCrisisScenarios(state, worldAnalysis));
+      scenarios.push(...generateOpportunityScenarios(state, worldAnalysis));
+      scenarios.push(...generateEmergentScenarios(state, worldAnalysis));
+
+      // AI nations make their moves
+      const aiActions = worldEngine.simulateOtherNations(state);
+      scenarios.push(...processAIActions(aiActions, state));
+      // Scheduled events for current month
+      const key = `${state.year}-${String(state.month).padStart(2, '0')}`;
+      if (!state.eventSchedule[key]) {
+        const historical = getHistoricalEvents(state.year, state.month).map(
+          (evt) => ({ ...evt, historical: true })
+        );
+        const speculative = await generatePlausibleEvents(state.year, state.month);
+        speculative.forEach((e) => (e.historical = false));
+        state.eventSchedule[key] = [...historical, ...speculative];
+      }
+      const monthly = state.eventSchedule[key].filter(
+        (evt) => !state.triggeredEvents.includes(evt.id)
+      );
+      state.triggeredEvents.push(...monthly.map((e) => e.id));
+      scenarios.push(
+        ...monthly.map((evt) => ({
+          type: evt.historical ? 'historical' : 'speculative',
+          priority: evt.importance,
+          content: {
+            title: evt.title,
+            description: evt.description,
+            date: evt.date,
+            category: evt.category
+          }
+        }))
+      );
+
+      return prioritizeScenarios(scenarios, state, worldAnalysis);
+    },
+    [worldEngine]
+  );
 
   const analyzeComplexWorldState = (state) => {
     return {
@@ -1914,7 +2196,7 @@ const AdvancedGeopoliticalSimulation = () => {
 
   const generateDiplomaticDecisions = (state, worldAnalysis) => {
     const options = [];
-    
+
     // Dynamic diplomatic options
     Object.entries(state.relationships.usa).forEach(([nation, rel]) => {
       if (rel.value < 40 && nation !== 'germany') {
@@ -1926,7 +2208,17 @@ const AdvancedGeopoliticalSimulation = () => {
         });
       }
     });
-    
+
+    // Decisions triggered by historical events
+    const eventDecisions = getHistoricalEvents(state.year, state.month)
+      .filter(
+        evt =>
+          state.triggeredEvents.includes(evt.id) &&
+          evt.decision?.category === 'diplomatic'
+      )
+      .map(evt => evt.decision!);
+    options.push(...eventDecisions);
+
     if (options.length === 0) {
       options.push({
         id: 'maintain_balance',
@@ -1935,7 +2227,7 @@ const AdvancedGeopoliticalSimulation = () => {
         consequences: ['Stability maintained', 'No major changes', 'Flexibility preserved']
       });
     }
-    
+
     return {
       title: 'Diplomatic Initiative',
       description: 'Shape international relationships',
@@ -1944,33 +2236,44 @@ const AdvancedGeopoliticalSimulation = () => {
   };
 
   const generateDomesticDecisions = (state, worldAnalysis) => {
+    const options = [
+      {
+        id: 'social_security_expansion',
+        title: 'Expand Social Security',
+        description: 'Broaden social safety net coverage',
+        consequences: ['Public support +10', 'Progressive satisfaction', 'Fiscal conservatives oppose']
+      },
+      {
+        id: 'labor_relations',
+        title: 'Labor Relations Act',
+        description: 'Strengthen worker rights and unions',
+        consequences: ['Labor support +15', 'Business opposition', 'Economic disruption risk']
+      },
+      {
+        id: 'rural_development',
+        title: 'Rural Development Program',
+        description: 'Target aid to agricultural regions',
+        consequences: ['Regional support', 'Agricultural recovery', 'Urban-rural balance']
+      }
+    ];
+
+    // Decisions prompted by historical events
+    getHistoricalEvents(state.year, state.month)
+      .filter(
+        evt =>
+          state.triggeredEvents.includes(evt.id) &&
+          evt.decision?.category === 'domestic'
+      )
+      .forEach(evt => options.push(evt.decision!));
+
     return {
       title: 'Domestic Policy',
       description: 'Address internal American challenges',
-      options: [
-        {
-          id: 'social_security_expansion',
-          title: 'Expand Social Security',
-          description: 'Broaden social safety net coverage',
-          consequences: ['Public support +10', 'Progressive satisfaction', 'Fiscal conservatives oppose']
-        },
-        {
-          id: 'labor_relations',
-          title: 'Labor Relations Act',
-          description: 'Strengthen worker rights and unions',
-          consequences: ['Labor support +15', 'Business opposition', 'Economic disruption risk']
-        },
-        {
-          id: 'rural_development',
-          title: 'Rural Development Program',
-          description: 'Target aid to agricultural regions',
-          consequences: ['Regional support', 'Agricultural recovery', 'Urban-rural balance']
-        }
-      ]
+      options
     };
   };
 
-  const handleEndTurn = () => {
+  const handleEndTurn = async () => {
     if (Object.keys(selectedDecisions).length < 2) return;
     
     // Process all decisions
@@ -2067,7 +2370,7 @@ const AdvancedGeopoliticalSimulation = () => {
 
     // Generate events using a single world analysis calculation
     const analysis = analyzeComplexWorldState(newState);
-    const events = generateTurnContent(newState, analysis);
+    const events = await generateTurnContent(newState, analysis);
     newState.turnEvents = events;
     if (DEBUG) console.log('Turn events:', events);
     worldEngine.state = newState;
