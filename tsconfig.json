@@ -13,7 +13,10 @@
       "dom",
       "dom.iterable"
     ],
-    "types": ["vite/client"]
+    "types": [
+      "vite/client",
+      "node"
+    ]
   },
   "exclude": [
     "vite.config.ts",
