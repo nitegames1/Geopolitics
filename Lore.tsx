@@ -1,14 +1,12 @@
 import React, { useState } from 'react'
-import { initialLeaders, Character } from './leaders'
+import { initialLeaders, Character, getLeaderById, getRandomLeader } from './leaders'
 
 export default function Lore() {
-  const [selected, setSelected] = useState<Character | null>(null)
+  const [selected, setSelected] = useState<Character>(getRandomLeader())
   const [lore, setLore] = useState('')
   const [loading, setLoading] = useState(false)
 
   async function generateLore() {
-    const char = selected
-    if (!char) return
     setLoading(true)
     setLore('')
     try {
@@ -22,7 +20,7 @@ export default function Lore() {
           model: 'gpt-3.5-turbo',
           messages: [
             { role: 'system', content: 'You write concise historical biographies for geopolitical simulation characters set in January 1936.' },
-            { role: 'user', content: `Describe ${char.name} and their outlook as of January 1936.` }
+            { role: 'user', content: `Describe ${selected.name} and their outlook as of January 1936.` }
           ],
           max_tokens: 150,
         })
@@ -40,15 +38,18 @@ export default function Lore() {
     <div className="sim-container">
       <h1>AI Lore Generator</h1>
       <select
-        value={selected?.id ?? ''}
-        onChange={e => setSelected(initialLeaders.find(l => l.id === e.target.value) ?? null)}
+        value={selected.id}
+        onChange={e => {
+          const leader = getLeaderById(e.target.value)
+          if (leader) setSelected(leader)
+        }}
       >
         <option value="">Select a character</option>
         {initialLeaders.map(l => (
           <option key={l.id} value={l.id}>{l.name}</option>
         ))}
       </select>
-      <button className="ml-2" disabled={!selected || loading} onClick={generateLore}>
+      <button className="ml-2" disabled={loading} onClick={generateLore}>
         {loading ? 'Generating...' : 'Generate Lore'}
       </button>
       {lore && <p className="mt-4 whitespace-pre-line">{lore}</p>}
