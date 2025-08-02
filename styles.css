@@ -63,6 +63,11 @@ button:hover {
   background-color: #3a3a3a;
 }
 
+/* Range slider */
+input[type='range'] {
+  width: 100%;
+}
+
 /* Reusable button styling */
 .btn {
   display: inline-flex;
@@ -198,6 +203,43 @@ h1, h2, h3 {
 .text-white { color: #ffffff; }
 .text-gray-300 { color: #d1d5db; }
 .text-gray-400 { color: #9ca3af; }
+
+/* Simulation extras */
+.gdp-chart {
+  width: 100%;
+  height: 150px;
+  background: #0f172a;
+  border: 1px solid #1f2937;
+  border-radius: 4px;
+}
+
+.event-log {
+  max-height: 150px;
+  overflow-y: auto;
+}
+
+/* Modal */
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.6);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.modal {
+  background: #1b1b1b;
+  border: 1px solid #333;
+  padding: 2rem;
+  border-radius: 8px;
+  box-shadow: 0 0 10px #000;
+  max-width: 400px;
+  width: 90%;
+}
 .text-gray-500 { color: #6b7280; }
 .text-blue-200 { color: #bfdbfe; }
 .text-blue-300 { color: #93c5fd; }
