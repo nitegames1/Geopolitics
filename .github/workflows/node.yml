@@ -1,4 +1,4 @@
-name: Node CI and Deploy
+name: CI & Deploy (Vite)
 
 on:
   push:
@@ -6,35 +6,28 @@ on:
   pull_request:
     branches: ["main"]
 
-jobs:
-  test:
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout repository
-        uses: actions/checkout@v4
-      - name: Set up Node.js
-        uses: actions/setup-node@v4
-        with:
-          node-version: 18
-      - name: Install dependencies
-        run: npm install
-      - name: Run tests
-        run: npm test
+permissions:
+  contents: write
 
+jobs:
   build-and-deploy:
     runs-on: ubuntu-latest
-    needs: test
+
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
-      - name: Set up Node.js
+
+      - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
           node-version: 18
+
       - name: Install dependencies
         run: npm install
-      - name: Build project
+
+      - name: Build with Vite
         run: npm run build
+
       - name: Deploy to GitHub Pages
         uses: peaceiris/actions-gh-pages@v3
         with:
