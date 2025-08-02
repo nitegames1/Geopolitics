@@ -1018,7 +1018,7 @@ const AdvancedGeopoliticalSimulation = () => {
     const worldAnalysis = useMemo(() => analyzeComplexWorldState(gameState), [gameState]);
     
     return (
-      <div className="bg-gray-800 rounded-lg p-6">
+      <div className="card shadow-md">
         <h2 className="text-2xl font-bold mb-4 text-blue-400 flex items-center">
           <Globe className="w-6 h-6 mr-2" />
           World Situation - {getMonthName(gameState.month)} {gameState.year}
@@ -1111,7 +1111,7 @@ const AdvancedGeopoliticalSimulation = () => {
   };
 
   const ActiveCrisesPanel = () => (
-    <div className="bg-gray-800 rounded-lg p-6">
+    <div className="card shadow-md">
       <h2 className="text-2xl font-bold mb-4 text-red-400 flex items-center">
         <AlertTriangle className="w-6 h-6 mr-2" />
         Active Crises
@@ -1156,7 +1156,7 @@ const AdvancedGeopoliticalSimulation = () => {
             
             <button 
               onClick={() => setDetailView({ type: 'crisis', data: crisis })}
-              className="mt-3 text-xs bg-red-700 hover:bg-red-600 px-3 py-1 rounded"
+              className="btn mt-3 text-xs bg-red-700 hover:bg-red-600"
             >
               View Details & Options
             </button>
@@ -1173,7 +1173,7 @@ const AdvancedGeopoliticalSimulation = () => {
   );
 
   const IntelligenceReportsPanel = () => (
-    <div className="bg-gray-800 rounded-lg p-6">
+    <div className="card shadow-md">
       <h2 className="text-2xl font-bold mb-4 text-green-400 flex items-center">
         <Eye className="w-6 h-6 mr-2" />
         Intelligence Reports
@@ -1224,7 +1224,7 @@ const AdvancedGeopoliticalSimulation = () => {
   );
 
   const NationalStatusPanel = () => (
-    <div className="bg-gray-800 rounded-lg p-6">
+    <div className="card shadow-md">
       <h2 className="text-xl font-bold mb-4 text-white flex items-center">
         <Shield className="w-5 h-5 mr-2" />
         United States Status
@@ -1307,7 +1307,7 @@ const AdvancedGeopoliticalSimulation = () => {
   );
 
   const TimelineTrackerPanel = () => (
-    <div className="bg-gray-800 rounded-lg p-6">
+    <div className="card shadow-md">
       <h2 className="text-xl font-bold mb-4 text-yellow-400 flex items-center">
         <History className="w-5 h-5 mr-2" />
         Timeline Status
@@ -1348,7 +1348,7 @@ const AdvancedGeopoliticalSimulation = () => {
         
         <button 
           onClick={() => setDetailView({ type: 'timeline' })}
-          className="w-full bg-yellow-700 hover:bg-yellow-600 px-3 py-2 rounded text-sm"
+          className="btn w-full bg-yellow-700 hover:bg-yellow-600 text-sm"
         >
           View Full Timeline
         </button>
@@ -1370,13 +1370,13 @@ const AdvancedGeopoliticalSimulation = () => {
   );
 
   const QuickActionsPanel = () => (
-    <div className="bg-gray-800 rounded-lg p-6">
+    <div className="card shadow-md">
       <h2 className="text-xl font-bold mb-4 text-white">Quick Actions</h2>
       
       <div className="space-y-2">
         <button 
           onClick={() => setCurrentView('decisions')}
-          className="w-full bg-blue-600 hover:bg-blue-700 px-4 py-3 rounded flex items-center justify-center"
+          className="btn w-full bg-blue-600 hover:bg-blue-700 flex items-center justify-center"
         >
           <Crown className="w-4 h-4 mr-2" />
           Make Decisions
@@ -1384,7 +1384,7 @@ const AdvancedGeopoliticalSimulation = () => {
         
         <button 
           onClick={() => setCurrentView('intelligence')}
-          className="w-full bg-green-600 hover:bg-green-700 px-4 py-3 rounded flex items-center justify-center"
+          className="btn w-full bg-green-600 hover:bg-green-700 flex items-center justify-center"
         >
           <Eye className="w-4 h-4 mr-2" />
           Intelligence Operations
@@ -1392,7 +1392,7 @@ const AdvancedGeopoliticalSimulation = () => {
         
         <button 
           onClick={() => setCurrentView('diplomacy')}
-          className="w-full bg-purple-600 hover:bg-purple-700 px-4 py-3 rounded flex items-center justify-center"
+          className="btn w-full bg-purple-600 hover:bg-purple-700 flex items-center justify-center"
         >
           <Network className="w-4 h-4 mr-2" />
           Diplomatic Actions
@@ -1401,7 +1401,7 @@ const AdvancedGeopoliticalSimulation = () => {
         <button 
           onClick={handleEndTurn}
           disabled={Object.keys(selectedDecisions).length < 2}
-          className={`w-full px-4 py-3 rounded flex items-center justify-center ${
+          className={`btn w-full flex items-center justify-center ${
             Object.keys(selectedDecisions).length >= 2
               ? 'bg-green-600 hover:bg-green-700'
               : 'bg-gray-600 cursor-not-allowed'
@@ -1415,7 +1415,7 @@ const AdvancedGeopoliticalSimulation = () => {
   );
 
   const RecentEventsPanel = () => (
-    <div className="bg-gray-800 rounded-lg p-6">
+    <div className="card shadow-md">
       <h2 className="text-xl font-bold mb-4 text-blue-400 flex items-center">
         <Zap className="w-5 h-5 mr-2" />
         Recent Events
@@ -1440,7 +1440,7 @@ const AdvancedGeopoliticalSimulation = () => {
     
     return (
       <div className="space-y-6">
-        <div className="bg-gray-800 rounded-lg p-6">
+        <div className="card shadow-md">
           <h2 className="text-2xl font-bold mb-4 text-white">Presidential Decisions</h2>
           <p className="text-gray-300">
             Select at least 2 decisions to advance to the next turn. Your choices will shape the course of history.
@@ -1469,7 +1469,7 @@ const AdvancedGeopoliticalSimulation = () => {
   };
 
   const DecisionCard = ({ category, decision, selected, onSelect }) => (
-    <div className={`bg-gray-800 rounded-lg p-6 ${
+    <div className={`card shadow-md ${
       decision.critical ? 'border-2 border-red-500' : ''
     }`}>
       <div className="flex justify-between items-start mb-4">
@@ -2101,7 +2101,7 @@ const AdvancedGeopoliticalSimulation = () => {
   return (
     <div className="min-h-screen bg-slate-900 text-white">
       {/* Header */}
-      <div className="bg-gradient-to-r from-blue-900 to-indigo-900 p-6">
+      <div className="header-hero shadow-md">
         <div className="max-w-7xl mx-auto">
           <div className="flex justify-between items-center">
             <div>
@@ -2116,7 +2116,7 @@ const AdvancedGeopoliticalSimulation = () => {
             <div className="flex items-center gap-4">
               <button
                 onClick={() => setSimulationPaused(!simulationPaused)}
-                className="bg-blue-700 hover:bg-blue-600 px-4 py-2 rounded flex items-center"
+                className="btn bg-blue-700 hover:bg-blue-600"
               >
                 {simulationPaused ? <Play className="w-4 h-4 mr-2" /> : <Pause className="w-4 h-4 mr-2" />}
                 {simulationPaused ? 'Resume' : 'Pause'}
@@ -2124,7 +2124,7 @@ const AdvancedGeopoliticalSimulation = () => {
               
               <button
                 onClick={() => saveGameState(gameState)}
-                className="bg-green-700 hover:bg-green-600 px-4 py-2 rounded flex items-center"
+                className="btn bg-green-700 hover:bg-green-600"
               >
                 <Save className="w-4 h-4 mr-2" />
                 Save
@@ -2132,7 +2132,7 @@ const AdvancedGeopoliticalSimulation = () => {
               
               <button
                 onClick={() => setCurrentView('settings')}
-                className="bg-gray-700 hover:bg-gray-600 px-4 py-2 rounded flex items-center"
+                className="btn bg-gray-700 hover:bg-gray-600"
               >
                 <Settings className="w-4 h-4 mr-2" />
                 Settings
@@ -2159,10 +2159,8 @@ const AdvancedGeopoliticalSimulation = () => {
               <button
                 key={tab.id}
                 onClick={() => setCurrentView(tab.id)}
-                className={`flex items-center px-6 py-4 font-medium transition-colors ${
-                  currentView === tab.id
-                    ? 'bg-blue-600 text-white'
-                    : 'text-gray-300 hover:text-white hover:bg-gray-700'
+                className={`nav-button flex items-center ${
+                  currentView === tab.id ? 'bg-blue-600 text-white' : 'text-gray-300'
                 }`}
               >
                 <tab.icon className="w-4 h-4 mr-2" />
@@ -2178,7 +2176,7 @@ const AdvancedGeopoliticalSimulation = () => {
         {currentView === 'dashboard' && <DashboardView />}
         {currentView === 'decisions' && <DecisionView decisions={decisions} />}
         {currentView === 'timeline' && (
-          <div className="bg-gray-800 rounded-lg p-6">
+          <div className="card shadow-md">
             <h2 className="text-2xl font-bold mb-4">Timeline View - Coming Soon</h2>
             <p className="text-gray-400">
               This will show a visual representation of historical divergences and butterfly effects.
@@ -2186,7 +2184,7 @@ const AdvancedGeopoliticalSimulation = () => {
           </div>
         )}
         {currentView === 'world' && (
-          <div className="bg-gray-800 rounded-lg p-6">
+          <div className="card shadow-md">
             <h2 className="text-2xl font-bold mb-4">World Map - Coming Soon</h2>
             <p className="text-gray-400">
               Interactive world map showing territories, alliances, and conflicts.
@@ -2198,7 +2196,7 @@ const AdvancedGeopoliticalSimulation = () => {
       {/* Detail Modal */}
       {detailView && (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50">
-          <div className="bg-gray-800 rounded-lg p-6 max-w-4xl max-h-[90vh] overflow-y-auto">
+          <div className="card shadow-lg max-w-4xl max-h-[90vh] overflow-y-auto">
             <div className="flex justify-between items-start mb-4">
               <h2 className="text-2xl font-bold">
                 {detailView.type === 'crisis' ? 'Crisis Details' : 'Timeline Details'}
