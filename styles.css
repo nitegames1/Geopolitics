@@ -418,7 +418,7 @@ body.light button {
 }
 body.light button:hover {
   background-color: #d5d5d5;
-=======
+}
 /* Tooltip */
 .tooltip {
   position: absolute;
@@ -450,5 +450,4 @@ body.light button:hover {
 
 .whitespace-pre-line {
   white-space: pre-line;
- main
 }
