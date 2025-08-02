@@ -13,5 +13,6 @@
       "dom",
       "dom.iterable"
     ]
-  }
+  },
+  "exclude": ["vite.config.ts"]
 }
