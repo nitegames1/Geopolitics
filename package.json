@@ -1,19 +1,25 @@
 {
   "name": "geopolitics",
   "version": "1.0.0",
+  "homepage": "https://nitegames1.github.io/Geopolitics",
   "description": "",
-  "main": "index.js",
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "predeploy": "npm run build",
+    "deploy": "gh-pages -d dist"
+  },
   "dependencies": {
-    "lucide-react": "^0.536.0",
-    "react": "^19.1.1",
-    "react-dom": "^19.1.1"
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0"
   },
   "devDependencies": {
     "@types/react": "^19.1.9",
     "@types/react-dom": "^19.1.7",
-    "typescript": "^5.9.2"
-  }
+    "@vitejs/plugin-react": "^4.7.0",
+    "gh-pages": "^6.0.0",
+    "typescript": "^5.9.2",
+    "vite": "^5.4.19"
+  },
+  "type": "module"
 }

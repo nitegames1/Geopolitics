@@ -1,4 +1,14 @@
-// @ts-nocheck
+import React, { useState, useEffect } from 'react';
+
+export default function EnhancedGeopoliticalSim() {
+  return (
+    <div>
+      <h1>Enhanced Geopolitical Sim</h1>
+      {/* Add more UI elements here */}
+    </div>
+  );
+}
+
 
 
 // ==== PERSISTENT WORLD ENGINE ====
@@ -724,9 +734,10 @@ const AdvancedGeopoliticalSimulation = () => {
   const [detailView, setDetailView] = useState(null);
 
   // ==== ENHANCED TURN GENERATION ====
-  const generateTurnContent = useCallback((state) => {
+  const generateTurnContent = useCallback((state, precomputedAnalysis?) => {
     const scenarios = [];
-    const worldAnalysis = analyzeComplexWorldState(state);
+    // Reuse analysis if provided to avoid redundant heavy calculations
+    const worldAnalysis = precomputedAnalysis || analyzeComplexWorldState(state);
     
     // Generate scenarios based on comprehensive world analysis
     scenarios.push(...generateCrisisScenarios(state, worldAnalysis));
@@ -2048,8 +2059,9 @@ const AdvancedGeopoliticalSimulation = () => {
       return true;
     });
 
-    // Generate events and store for this turn
-    const events = generateTurnContent(newState);
+    // Generate events using a single world analysis calculation
+    const analysis = analyzeComplexWorldState(newState);
+    const events = generateTurnContent(newState, analysis);
     newState.turnEvents = events;
     if (DEBUG) console.log('Turn events:', events);
     worldEngine.state = newState;
@@ -2207,3 +2219,11 @@ const AdvancedGeopoliticalSimulation = () => {
     </div>
   );
 };
+
+export default AdvancedGeopoliticalSimulation;
+<<<<<<< HEAD
+=======
+
+>>>>>>> 5eeaac1 (WIP: local changes before pulling)
+ main
+main
