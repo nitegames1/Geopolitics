@@ -1,5 +1,11 @@
 // @ts-nocheck
-import { useState } from 'react';
+import React from 'react';
+import { useState } from 'react'; // ✅ REQUIRED for useState to work
+
+// or more completely:
+import React from 'react';
+import { useState, useEffect } from 'react';
+
 
 // ==== PERSISTENT WORLD ENGINE ====
 class WorldEngine {
