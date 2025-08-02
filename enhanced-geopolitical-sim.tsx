@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 
+
 // Toggle debug logging throughout the simulation
 const DEBUG = false;
 
@@ -12,6 +13,8 @@ export default function EnhancedGeopoliticalSim() {
   );
 }
 
+
+ main
 
 
 // ==== PERSISTENT WORLD ENGINE ====
@@ -2224,9 +2227,3 @@ const AdvancedGeopoliticalSimulation = () => {
 };
 
 export default AdvancedGeopoliticalSimulation;
-<<<<<<< HEAD
-=======
-
->>>>>>> 5eeaac1 (WIP: local changes before pulling)
- main
-main
