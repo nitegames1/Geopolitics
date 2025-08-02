@@ -19,4 +19,8 @@ Thumbs.db
 .idea/
 .vscode/
 
+
+# Build output
+
+ main
 dist/

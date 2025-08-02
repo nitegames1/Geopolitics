@@ -1,5 +1,8 @@
 import React, { useState, useEffect } from 'react'
 
+import { Character, initialLeaders } from './leaders'
+
+
 export interface Character {
   id: string
   name: string
@@ -9,6 +12,7 @@ export interface Character {
   wiki: string
   portrait?: string
 }
+ main
 
 interface CabinetMember {
   position: string
@@ -17,10 +21,22 @@ interface CabinetMember {
 }
 
 
+
+
+ main
 interface ElectionCandidate {
   name: string
   party: string
   support: number
+
+}
+
+interface Congress {
+  senate: { democrats: number; republicans: number; independents: number }
+  house: { democrats: number; republicans: number }
+}
+
+
 }
 
 interface Congress {
@@ -184,6 +200,7 @@ export const initialLeaders: Character[] = [
   },
 ]
 
+main
 export default function App() {
   const [leaders, setLeaders] = useState<Character[]>(initialLeaders)
   const [approval, setApproval] = useState(50)
@@ -223,10 +240,19 @@ export default function App() {
       })
     ).then(updated => {
       setLeaders(updated)
+
+      setCabinet(c =>
+        c.map(cm => ({
+          ...cm,
+          candidates: updated.filter(l => l.country === 'United States')
+        }))
+      )
+
       setCabinet(cabinet.map(c => ({
         ...c,
         candidates: updated.filter(l => l.country === 'United States')
       })))
+ main
     })
   }, [])
 

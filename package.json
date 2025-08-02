@@ -10,7 +10,11 @@
     "typecheck": "tsc --noEmit",
     "predeploy": "npm run build",
     "deploy": "gh-pages -d dist",
+
+    "test": "echo \"No tests specified\""
+
     "test": "echo 'No tests specified'"
+ main
   },
   "dependencies": {
     "react": "^18.2.0",
