@@ -1,5 +1,10 @@
 # Geopolitics
 
+
+This project is built with **Vite** and **React**. The following commands help you get up and running.
+
+## Install dependencies
+
 A simple React-based prototype for a geopolitical simulation.
 
 The app now includes a tiny economy demo with random events, a GDP trend
@@ -12,11 +17,47 @@ events occur or enable a playful *Fun Mode* with exaggerated impacts. Use
 ## Getting Started
 
 Install dependencies and start the development server:
+main
 
 ```bash
 npm install
 npm run dev
 ```
+
+
+## Start the development server
+
+```bash
+npm run dev
+```
+
+Vite will start on <http://localhost:5173> by default.
+
+## Build for production
+
+```bash
+npm run build
+```
+
+The build output is placed in the `dist/` directory.
+
+## Serve the production build
+
+After building, you can serve the files locally with:
+
+```bash
+node server.js
+```
+
+This starts a simple HTTP server at <http://localhost:5000>.
+
+## Run tests
+
+```bash
+npm test
+```
+
+This project uses [Vitest](https://vitest.dev/) for unit testing.
 
 Run a TypeScript check before committing code:
 
@@ -32,3 +73,4 @@ npm run serve
 ```
 By default the server runs on `http://localhost:5000`. Set the `PORT`
 environment variable to override the port if needed.
+ main
