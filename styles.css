@@ -150,6 +150,11 @@ input[type='range'] {
   width: 100%;
 }
 
+/* Range slider */
+input[type='range'] {
+  width: 100%;
+}
+
 /* Reusable button styling */
 .btn {
   display: inline-flex;
@@ -389,6 +394,31 @@ h1, h2, h3 {
 .hover\:text-white:hover { color: #ffffff; }
 .hover\:bg-red-600:hover { background-color: #dc2626; }
 .hover\:bg-yellow-600:hover { background-color: #ca8a04; }
+
+
+/* Light theme overrides */
+body.light {
+  background-color: #f0f0f0;
+  color: #0d0d0d;
+}
+body.light .sim-container {
+  background: #ffffff;
+  color: #0d0d0d;
+  border-color: #ccc;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+body.light .panel {
+  background: #f9f9f9;
+  border-color: #ddd;
+}
+body.light button {
+  background-color: #e0e0e0;
+  color: #000;
+  border-color: #bbb;
+}
+body.light button:hover {
+  background-color: #d5d5d5;
+=======
 /* Tooltip */
 .tooltip {
   position: absolute;
@@ -420,4 +450,5 @@ h1, h2, h3 {
 
 .whitespace-pre-line {
   white-space: pre-line;
+ main
 }

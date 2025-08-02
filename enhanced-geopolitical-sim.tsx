@@ -1,3 +1,7 @@
+
+import React, { useState, useEffect } from 'react';
+
+
 import React, { useState, useEffect, useCallback, useMemo } from 'react';
 
 // Historical event data keyed by YYYY-MM
@@ -211,6 +215,7 @@ const generatePlausibleEvents = async (
     }
   ];
 };
+ main
 
 const getHistoricalEvents = (year: number, month: number): HistoricalEvent[] => {
   const key = `${year}-${String(month).padStart(2, '0')}`;
