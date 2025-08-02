@@ -1,21 +1,13 @@
 # Geopolitics
 
-This project is built with **Vite** and **React**.
+A simple React-based prototype for a geopolitical simulation.
 
-## Setup
+## Getting Started
 
 Install dependencies and start the development server:
 
 ```bash
 npm install
-npm run dev
-```
-
-## Development
-
-Start the Vite dev server:
-
-```bash
 npm run dev
 ```
 
@@ -29,6 +21,10 @@ npm run build
 
 ## Testing
 
+Run unit tests with:
+
 ```bash
 npm test
 ```
+
+This project uses [Vitest](https://vitest.dev/) for unit testing.
