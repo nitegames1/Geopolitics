@@ -1,24 +1,12 @@
 modules = ["nodejs-20"]
-run = "node index.js"
+run = "npm run dev"
 
 [nix]
 channel = "stable-25_05"
 
 [deployment]
-run = ["sh", "-c", "node index.js"]
-
-[workflows]
-runButton = "Start Development Server"
-
-[[workflows.workflow]]
-name = "Start Development Server"
-author = 45855038
-mode = "sequential"
-
-[[workflows.workflow.tasks]]
-task = "shell.exec"
-args = "node server.js"
+run = ["sh", "-c", "npm run dev"]
 
 [[ports]]
-localPort = 5000
+localPort = 5173
 externalPort = 80
