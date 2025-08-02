@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect, useCallback, useMemo } from 'react';
 
 // Historical event data keyed by YYYY-MM
@@ -237,6 +238,9 @@ const preScheduleEvents = async (
   }
   return schedule;
 };
+
+import React, { useState, useEffect } from 'react';
+main
 
 
 
@@ -2511,9 +2515,3 @@ const AdvancedGeopoliticalSimulation = () => {
 };
 
 export default AdvancedGeopoliticalSimulation;
-<<<<<<< HEAD
-=======
-
->>>>>>> 5eeaac1 (WIP: local changes before pulling)
- main
-main
