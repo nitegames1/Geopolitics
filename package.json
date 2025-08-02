@@ -6,9 +6,15 @@
   "scripts": {
     "dev": "vite",
     "build": "vite build",
+
     "test": "vitest",
+
+    "serve": "node server.js",
+    "typecheck": "tsc --noEmit",
+main
     "predeploy": "npm run build",
-    "deploy": "gh-pages -d dist"
+    "deploy": "gh-pages -d dist",
+    "test": "echo 'No tests specified'"
   },
   "dependencies": {
     "react": "^18.2.0",
