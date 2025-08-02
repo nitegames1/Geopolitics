@@ -1,17 +1,13 @@
 import React, { useState } from 'react'
-
-const initialLeaders = [
-  { id: 'fdr', name: 'Franklin D. Roosevelt' },
-  { id: 'landon', name: 'Alf Landon' }
-]
+import { initialLeaders, Character } from './leaders'
 
 export default function Lore() {
-  const [selected, setSelected] = useState<string>('')
+  const [selected, setSelected] = useState<Character | null>(null)
   const [lore, setLore] = useState('')
   const [loading, setLoading] = useState(false)
 
   async function generateLore() {
-    const char = initialLeaders.find(l => l.id === selected)
+    const char = selected
     if (!char) return
     setLoading(true)
     setLore('')
@@ -43,7 +39,10 @@ export default function Lore() {
   return (
     <div className="sim-container">
       <h1>AI Lore Generator</h1>
-      <select value={selected} onChange={e => setSelected(e.target.value)}>
+      <select
+        value={selected?.id ?? ''}
+        onChange={e => setSelected(initialLeaders.find(l => l.id === e.target.value) ?? null)}
+      >
         <option value="">Select a character</option>
         {initialLeaders.map(l => (
           <option key={l.id} value={l.id}>{l.name}</option>
