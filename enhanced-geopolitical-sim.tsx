@@ -1,7 +1,3 @@
-
-import React, { useState, useEffect, useMemo } from 'react';
-
-
 import React, { useState, useEffect, useCallback, useMemo } from 'react';
 
 // Historical event data keyed by YYYY-MM
@@ -241,28 +237,8 @@ const preScheduleEvents = async (
   }
   return schedule;
 };
-
-import React, { useState, useEffect } from 'react';
-main
-
-
 // Toggle debug logging throughout the simulation
 const DEBUG = false;
- main
-
-export default function EnhancedGeopoliticalSim() {
-  return (
-    <div>
-      <h1>Enhanced Geopolitical Sim</h1>
-      {/* Add more UI elements here */}
-    </div>
-  );
-}
-
-
- main
-
-
 // ==== PERSISTENT WORLD ENGINE ====
 class WorldEngine {
   state;

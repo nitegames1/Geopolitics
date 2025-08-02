@@ -17,8 +17,6 @@ events occur or enable a playful *Fun Mode* with exaggerated impacts. Use
 ## Getting Started
 
 Install dependencies and start the development server:
-main
-
 ```bash
 npm install
 npm run dev
@@ -73,4 +71,3 @@ npm run serve
 ```
 By default the server runs on `http://localhost:5000`. Set the `PORT`
 environment variable to override the port if needed.
- main

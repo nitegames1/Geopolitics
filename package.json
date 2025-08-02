@@ -6,16 +6,8 @@
   "scripts": {
     "dev": "vite",
     "build": "vite build",
-
-    "serve": "node server.js",
-=======
-
-    "test": "vitest",
-
     "serve": "node server.js",
     "typecheck": "tsc --noEmit",
-main
- main
     "predeploy": "npm run build",
     "deploy": "gh-pages -d dist",
     "test": "echo 'No tests specified'"
