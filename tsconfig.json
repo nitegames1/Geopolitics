@@ -12,7 +12,8 @@
       "es2020",
       "dom",
       "dom.iterable"
-    ]
+    ],
+    "types": ["vite/client"]
   },
   "exclude": [
     "vite.config.ts",
