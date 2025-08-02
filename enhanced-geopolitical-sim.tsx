@@ -1,4 +1,4 @@
-// @ts-nocheck
+import React, { useState, useEffect } from 'react';
 
 
 // ==== PERSISTENT WORLD ENGINE ====
@@ -2213,4 +2213,5 @@ const AdvancedGeopoliticalSimulation = () => {
 };
 
 export default AdvancedGeopoliticalSimulation;
-
+ codex/optimize-game-mechanics
+ main
