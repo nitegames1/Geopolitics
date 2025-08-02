@@ -1,3 +1,6 @@
+# Build output
+dist/
+
 # Dependencies
 node_modules/
 
@@ -18,3 +21,4 @@ Thumbs.db
 # Editor directories and files
 .idea/
 .vscode/
+
