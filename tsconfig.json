@@ -1,7 +1,7 @@
 {
   "compilerOptions": {
-    "target": "es2015",
-    "module": "commonjs",
+    "target": "es2020",
+    "module": "es2020",
     "jsx": "react",
     "esModuleInterop": true,
     "forceConsistentCasingInFileNames": true,
@@ -14,5 +14,8 @@
       "dom.iterable"
     ]
   },
-  "exclude": ["vite.config.ts"]
+  "exclude": [
+    "vite.config.ts",
+    "enhanced-geopolitical-sim.tsx"
+  ]
 }

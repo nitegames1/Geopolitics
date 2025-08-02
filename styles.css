@@ -253,3 +253,56 @@ h1, h2, h3 {
 .hover\:text-white:hover { color: #ffffff; }
 .hover\:bg-red-600:hover { background-color: #dc2626; }
 .hover\:bg-yellow-600:hover { background-color: #ca8a04; }
+/* Tooltip */
+.tooltip {
+  position: absolute;
+  left: 100%;
+  top: 0;
+  margin-left: 0.5rem;
+  background: #333;
+  color: #fff;
+  padding: 0.5rem;
+  border-radius: 4px;
+  width: 200px;
+  z-index: 10;
+}
+
+/* HUD */
+.hud {
+  font-weight: 500;
+}
+
+/* Portrait images */
+.portrait {
+  width: 40px;
+  height: 50px;
+  object-fit: cover;
+  border-radius: 4px;
+  display: inline-block;
+  vertical-align: middle;
+}
+
+/* World map */
+.map-container {
+  width: 100%;
+  max-width: 800px;
+  margin: 0 auto;
+}
+.map-container svg {
+  width: 100%;
+  height: auto;
+}
+
+/* Country tabs */
+.tabs {
+  display: flex;
+  gap: 0.5rem;
+  margin-bottom: 0.5rem;
+}
+.tabs button.active {
+  background-color: #3a3a3a;
+}
+
+.whitespace-pre-line {
+  white-space: pre-line;
+}
