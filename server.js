@@ -16,9 +16,15 @@ const mimeTypes = {
   '.json': 'application/json'
 };
 
+const baseDir = join(__dirname, 'dist');
+
 const server = createServer((req, res) => {
-  let filePath = req.url === '/' ? '/index.html' : req.url;
-  filePath = join(__dirname, filePath);
+  let reqPath = req.url || '/';
+  if (reqPath.startsWith('/Geopolitics/')) {
+    reqPath = reqPath.replace('/Geopolitics', '');
+  }
+  let filePath = reqPath === '/' ? '/index.html' : reqPath;
+  filePath = join(baseDir, filePath);
 
   try {
     const content = readFileSync(filePath);
