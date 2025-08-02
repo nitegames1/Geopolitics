@@ -162,4 +162,15 @@ export const initialLeaders: Character[] = [
     bio: 'Ethiopian emperor resisting the Italian invasion during the 1935–1936 war.',
     wiki: 'Haile_Selassie'
   }
+
+];
+
+export function getLeaderById(id: string): Character | undefined {
+  return initialLeaders.find(l => l.id === id)
+}
+
+export function getRandomLeader(): Character {
+  return initialLeaders[Math.floor(Math.random() * initialLeaders.length)]
+}
+
 ]

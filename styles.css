@@ -254,6 +254,10 @@ h1, h2, h3 {
 .mt-1 { margin-top: 0.25rem; }
 .mt-2 { margin-top: 0.5rem; }
 .mt-3 { margin-top: 0.75rem; }
+
+.mt-4 { margin-top: 1rem; }
+
+
 .mx-4 { margin-left: 1rem; margin-right: 1rem; }
 .mx-auto { margin-left: auto; margin-right: auto; }
 .space-y-1 > * + * { margin-top: 0.25rem; }
