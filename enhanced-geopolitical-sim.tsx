@@ -1,5 +1,15 @@
 import React, { useState, useEffect } from 'react';
 
+export default function EnhancedGeopoliticalSim() {
+  return (
+    <div>
+      <h1>Enhanced Geopolitical Sim</h1>
+      {/* Add more UI elements here */}
+    </div>
+  );
+}
+
+
 
 // ==== PERSISTENT WORLD ENGINE ====
 class WorldEngine {
@@ -2213,5 +2223,9 @@ const AdvancedGeopoliticalSimulation = () => {
 };
 
 export default AdvancedGeopoliticalSimulation;
+<<<<<<< HEAD
+=======
+
+>>>>>>> 5eeaac1 (WIP: local changes before pulling)
  main
 main

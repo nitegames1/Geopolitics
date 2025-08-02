@@ -1,7 +1,9 @@
-import React from 'react';
-import ReactDOM from 'react-dom/client';
-import AdvancedGeopoliticalSimulation from './enhanced-geopolitical-sim';
+import React from 'react'
+import ReactDOM from 'react-dom/client'
+import App from './App'
 
 ReactDOM.createRoot(document.getElementById('root')!).render(
-  <AdvancedGeopoliticalSimulation />
-);
+  <React.StrictMode>
+    <App />
+  </React.StrictMode>
+)

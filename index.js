@@ -1,4 +1,7 @@
+import React from 'react';
+import ReactDOM from 'react-dom/client';
+import EnhancedGeopoliticalSim from './enhanced-geopolitical-sim.jsx';
+import './index.css';
 
-// This file is not needed for browser-based React setup
-// The React app is initialized directly in index.html
-console.log('React app files served successfully');
+const root = ReactDOM.createRoot(document.getElementById('root'));
+root.render(<EnhancedGeopoliticalSim />);
