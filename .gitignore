@@ -19,3 +19,9 @@ Thumbs.db
 # Editor directories and files
 .idea/
 .vscode/
+
+
+# Build output
+
+ main
+dist/

@@ -1,4 +1,8 @@
+
 name: Node.js CI
+
+name: Node CI
+ main
 
 on:
   push:
@@ -13,16 +17,33 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
 
+
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
           node-version: 18
+    - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 18
+          cache: 'npm'
+ main
 
       - name: Install dependencies
         run: npm ci
 
+ wr89mv-codex/remove-deno-workflow-and-add-node-workflow
       - name: TypeScript check
         run: npm run typecheck
 
       - name: Build
+
+      - name: Type check
+        run: npm run typecheck
+
+      - name: Run tests
+        run: npm test
+
+      - name: Build project
+main
         run: npm run build
