@@ -6,9 +6,11 @@
   "scripts": {
     "dev": "vite",
     "build": "vite build",
-    "test": "echo \"No tests specified\" && exit 0",
+    "serve": "node server.js",
+    "typecheck": "tsc --noEmit",
     "predeploy": "npm run build",
-    "deploy": "gh-pages -d dist"
+    "deploy": "gh-pages -d dist",
+    "test": "echo 'No tests specified'"
   },
   "dependencies": {
     "react": "^18.2.0",
@@ -20,7 +22,8 @@
     "@vitejs/plugin-react": "^4.7.0",
     "gh-pages": "^6.0.0",
     "typescript": "^5.9.2",
-    "vite": "^5.4.19"
+    "vite": "^5.4.19",
+    "vitest": "^1.6.1"
   },
   "type": "module"
 }
