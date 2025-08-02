@@ -1,4 +1,7 @@
 
+import React, { useState, useEffect, useMemo } from 'react';
+
+
 import React, { useState, useEffect, useCallback, useMemo } from 'react';
 
 // Historical event data keyed by YYYY-MM
@@ -245,6 +248,7 @@ main
 
 // Toggle debug logging throughout the simulation
 const DEBUG = false;
+ main
 
 export default function EnhancedGeopoliticalSim() {
   return (
@@ -575,13 +579,22 @@ const AdvancedGeopoliticalSimulation = () => {
         inflation: -1.2,
         treasury: 45,
         debt: 42,
-        
+
+        interestRate: 1.5,
+        consumerConfidence: 45,
+        businessConfidence: 40,
+        capacityUtilization: 68,
+        goldReserves: 20,
+        marketIndex: 95,
+        energyDependence: 30,
+        infrastructureQuality: 60,
+
         sectors: {
           agriculture: { size: 25, growth: -5, employment: 8500000 },
           manufacturing: { size: 35, growth: -3, employment: 9200000 },
           services: { size: 40, growth: 1, employment: 12300000 }
         },
-        
+
         trade: {
           exports: 120,
           imports: 95,
@@ -698,6 +711,7 @@ const AdvancedGeopoliticalSimulation = () => {
           gdp: 450,
           gdpGrowth: 8.5,
           unemployment: 4,
+          inflation: 2.5,
           militarySpending: 35,
           autarky: 65
         },
@@ -726,6 +740,7 @@ const AdvancedGeopoliticalSimulation = () => {
           gdp: 520,
           gdpGrowth: 2.1,
           unemployment: 11,
+          inflation: 1.5,
           empire_contribution: 35,
           financial_center: true
         },
@@ -754,6 +769,7 @@ const AdvancedGeopoliticalSimulation = () => {
           gdp: 280,
           gdpGrowth: -0.5,
           unemployment: 15,
+          inflation: 0.8,
           social_spending: 45,
           political_instability: 70
         },
@@ -782,6 +798,7 @@ const AdvancedGeopoliticalSimulation = () => {
           gdp: 220,
           gdpGrowth: 5.2,
           unemployment: 6,
+          inflation: 3.2,
           resource_dependence: 85,
           zaibatsu_power: 75
         },
@@ -810,6 +827,7 @@ const AdvancedGeopoliticalSimulation = () => {
           gdp: 380,
           gdpGrowth: 12.5,
           unemployment: 0, // Official figure
+          inflation: 1.0,
           industrialization: 55,
           collectivization: 75
         },
@@ -849,6 +867,8 @@ const AdvancedGeopoliticalSimulation = () => {
         growth_rate: -3.5,
         protectionism: 75,
         currency_stability: 60,
+        commodity_index: 80,
+        financial_stability: 55,
         trade_blocs: [
           { name: 'Sterling Area', members: ['britain', 'dominions'], strength: 80 },
           { name: 'Gold Bloc', members: ['france', 'belgium', 'switzerland'], strength: 45 }
@@ -1060,7 +1080,12 @@ const AdvancedGeopoliticalSimulation = () => {
       crisisPotential: calculateCrisisPotential(state),
       
       // Player Standing
-      playerInfluence: calculatePlayerInfluence(state)
+      playerInfluence: calculatePlayerInfluence(state),
+
+      // Additional Metrics
+      economicStability: calculateEconomicStability(state),
+      diplomaticTrust: calculateDiplomaticTrust(state),
+      warReadiness: calculateWarReadiness(state)
     };
   };
 
@@ -1110,17 +1135,27 @@ const AdvancedGeopoliticalSimulation = () => {
   };
 
   const analyzeGlobalEconomy = (state) => {
-    const totalGDP = Object.values(state.nations).reduce((sum, nation) => 
+    const nations = Object.values(state.nations);
+    const totalGDP = nations.reduce((sum, nation) =>
       sum + (nation.economy?.gdp || 0), 0) + state.player.economy.gdp;
-    
-    const avgGrowth = Object.values(state.nations).reduce((sum, nation) => 
-      sum + (nation.economy?.gdpGrowth || 0), 0) / Object.keys(state.nations).length;
-    
+
+    const totalActors = nations.length + 1; // include player
+    const avgGrowth = (nations.reduce((sum, nation) =>
+      sum + (nation.economy?.gdpGrowth || 0), 0) + state.player.economy.gdpGrowth) / totalActors;
+    const avgUnemployment = (nations.reduce((sum, nation) =>
+      sum + (nation.economy?.unemployment || 0), 0) + state.player.economy.unemployment) / totalActors;
+    const avgInflation = (nations.reduce((sum, nation) =>
+      sum + (nation.economy?.inflation || 0), 0) + state.player.economy.inflation) / totalActors;
+
     return {
       totalGDP,
       avgGrowth,
+      avgUnemployment,
+      avgInflation,
       tradeVolume: state.globalSystems.trade.total_volume,
       protectionism: state.globalSystems.trade.protectionism,
+      commodityIndex: state.globalSystems.trade.commodity_index,
+      financialStability: state.globalSystems.trade.financial_stability,
       trend: avgGrowth > 2 ? 'recovery' : avgGrowth > -2 ? 'stagnation' : 'depression'
     };
   };
@@ -1544,27 +1579,7 @@ const AdvancedGeopoliticalSimulation = () => {
         </div>
         
         {/* Economic Details */}
-        <div className="bg-gray-700 rounded p-3">
-          <h4 className="font-bold text-green-400 mb-2">Economic Details</h4>
-          <div className="text-sm space-y-1">
-            <div className="flex justify-between">
-              <span>GDP Growth</span>
-              <span className={gameState.player.economy.gdpGrowth > 0 ? 'text-green-400' : 'text-red-400'}>
-                {gameState.player.economy.gdpGrowth.toFixed(1)}%
-              </span>
-            </div>
-            <div className="flex justify-between">
-              <span>Unemployment</span>
-              <span className="text-yellow-400">{gameState.player.economy.unemployment}%</span>
-            </div>
-            <div className="flex justify-between">
-              <span>Treasury</span>
-              <span className={gameState.player.economy.treasury > 20 ? 'text-green-400' : 'text-red-400'}>
-                ${gameState.player.economy.treasury}B
-              </span>
-            </div>
-          </div>
-        </div>
+        <CompactEconomyPanel economy={gameState.player.economy} />
         
         {/* Political Factions */}
         <div className="bg-gray-700 rounded p-3">
@@ -1649,10 +1664,42 @@ const AdvancedGeopoliticalSimulation = () => {
       <div className="text-xs text-gray-400 mb-1">{label}</div>
       <div className="text-2xl font-bold text-white">{value}%</div>
       <div className="w-full bg-gray-600 rounded-full h-1 mt-1">
-        <div 
+        <div
           className={`h-1 rounded-full bg-${color}-500`}
           style={{ width: `${value}%` }}
         />
+      </div>
+    </div>
+  );
+
+  const CompactEconomyPanel = ({ economy }) => (
+    <div className="bg-gray-700 rounded p-3">
+      <h4 className="font-bold text-green-400 mb-2">Economy</h4>
+      <div className="text-sm space-y-1">
+        <div className="flex justify-between">
+          <span>GDP</span>
+          <span className="font-bold">${economy.gdp}B</span>
+        </div>
+        <div className="flex justify-between">
+          <span>Growth</span>
+          <span className={economy.gdpGrowth > 0 ? 'text-green-400' : 'text-red-400'}>
+            {economy.gdpGrowth.toFixed(1)}%
+          </span>
+        </div>
+        <div className="flex justify-between">
+          <span>Unemployment</span>
+          <span className="text-yellow-400">{economy.unemployment}%</span>
+        </div>
+        <div className="flex justify-between">
+          <span>Inflation</span>
+          <span className={economy.inflation > 0 ? 'text-red-400' : 'text-blue-400'}>
+            {economy.inflation.toFixed(1)}%
+          </span>
+        </div>
+        <div className="flex justify-between">
+          <span>Interest Rate</span>
+          <span className="text-gray-300">{economy.interestRate}%</span>
+        </div>
       </div>
     </div>
   );
@@ -1817,6 +1864,92 @@ const AdvancedGeopoliticalSimulation = () => {
     </div>
   );
 
+  // ==== ECONOMY VIEW ====
+  const EconomyView = () => {
+    const econ = gameState.player.economy;
+    const worldAnalysis = useMemo(() => analyzeComplexWorldState(gameState), [gameState]);
+    const tradeBalance = econ.trade.exports - econ.trade.imports;
+
+    return (
+      <div className="space-y-6">
+        <div className="card shadow-md">
+          <h2 className="text-2xl font-bold mb-4 text-green-400 flex items-center">
+            <Database className="w-6 h-6 mr-2" />
+            National Economy
+          </h2>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div className="text-sm space-y-1">
+              <h3 className="font-bold mb-2">Key Indicators</h3>
+              <div className="flex justify-between"><span>GDP</span><span className="font-bold">${econ.gdp}B</span></div>
+              <div className="flex justify-between"><span>GDP Growth</span><span className={econ.gdpGrowth > 0 ? 'text-green-400' : 'text-red-400'}>{econ.gdpGrowth.toFixed(1)}%</span></div>
+              <div className="flex justify-between"><span>Unemployment</span><span className="text-yellow-400">{econ.unemployment}%</span></div>
+              <div className="flex justify-between"><span>Inflation</span><span className={econ.inflation > 0 ? 'text-red-400' : 'text-blue-400'}>{econ.inflation.toFixed(1)}%</span></div>
+              <div className="flex justify-between"><span>Debt</span><span>${econ.debt}B</span></div>
+              <div className="flex justify-between"><span>Treasury</span><span>${econ.treasury}B</span></div>
+              <div className="flex justify-between"><span>Interest Rate</span><span>{econ.interestRate}%</span></div>
+            </div>
+
+            <div className="text-sm space-y-1">
+              <h3 className="font-bold mb-2">Confidence & Capacity</h3>
+              <div className="flex justify-between"><span>Consumer Confidence</span><span>{econ.consumerConfidence}</span></div>
+              <div className="flex justify-between"><span>Business Confidence</span><span>{econ.businessConfidence}</span></div>
+              <div className="flex justify-between"><span>Capacity Utilization</span><span>{econ.capacityUtilization}%</span></div>
+              <div className="flex justify-between"><span>Market Index</span><span>{econ.marketIndex}</span></div>
+              <div className="flex justify-between"><span>Gold Reserves</span><span>{econ.goldReserves}B</span></div>
+            </div>
+
+            <div className="text-sm space-y-1">
+              <h3 className="font-bold mb-2">Infrastructure & Resources</h3>
+              <div className="flex justify-between"><span>Energy Dependence</span><span>{econ.energyDependence}%</span></div>
+              <div className="flex justify-between"><span>Infrastructure Quality</span><span>{econ.infrastructureQuality}</span></div>
+            </div>
+
+            <div className="text-sm space-y-1">
+              <h3 className="font-bold mb-2">Trade</h3>
+              <div className="flex justify-between"><span>Exports</span><span>${econ.trade.exports}B</span></div>
+              <div className="flex justify-between"><span>Imports</span><span>${econ.trade.imports}B</span></div>
+              <div className="flex justify-between"><span>Trade Balance</span><span className={tradeBalance >= 0 ? 'text-green-400' : 'text-red-400'}>${tradeBalance}B</span></div>
+              <div className="flex justify-between"><span>Tariffs</span><span>{econ.trade.tariffs}%</span></div>
+              <div><span className="text-gray-300">Partners: {econ.trade.mainPartners.join(', ')}</span></div>
+            </div>
+          </div>
+        </div>
+
+        <div className="card shadow-md">
+          <h3 className="font-bold mb-4 text-white">Sector Breakdown</h3>
+          <div className="overflow-x-auto">
+            <table className="w-full text-sm">
+              <thead>
+                <tr className="text-left"><th className="pb-2">Sector</th><th className="pb-2">Size</th><th className="pb-2">Growth</th><th className="pb-2">Employment</th></tr>
+              </thead>
+              <tbody>
+                {Object.entries(econ.sectors).map(([sector, data]) => (
+                  <tr key={sector}>
+                    <td className="py-1 capitalize">{sector}</td>
+                    <td className="py-1">{data.size}%</td>
+                    <td className={`py-1 ${data.growth > 0 ? 'text-green-400' : 'text-red-400'}`}>{data.growth}%</td>
+                    <td className="py-1">{data.employment.toLocaleString()}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <div className="card shadow-md">
+          <h3 className="font-bold mb-4 text-yellow-400">Global Economy</h3>
+          <div className="text-sm space-y-1">
+            <div className="flex justify-between"><span>Total GDP</span><span className="font-bold">${worldAnalysis.globalEconomy.totalGDP}B</span></div>
+            <div className="flex justify-between"><span>Average Growth</span><span className={worldAnalysis.globalEconomy.avgGrowth > 0 ? 'text-green-400' : 'text-red-400'}>{worldAnalysis.globalEconomy.avgGrowth.toFixed(1)}%</span></div>
+            <div className="flex justify-between"><span>Trade Volume</span><span className="font-bold">${worldAnalysis.globalEconomy.tradeVolume}B</span></div>
+            <div className="flex justify-between"><span>Protectionism</span><span>{worldAnalysis.globalEconomy.protectionism}%</span></div>
+          </div>
+        </div>
+      </div>
+    );
+  };
+
   // ==== HELPER FUNCTIONS ====
   const getMonthName = (month) => {
     const months = ['January', 'February', 'March', 'April', 'May', 'June',
@@ -1903,6 +2036,165 @@ const AdvancedGeopoliticalSimulation = () => {
     influence -= state.timeline.divergence_score * 0.2;
     
     return Math.max(0, Math.min(100, Math.round(influence)));
+  };
+
+  const calculateEconomicStability = (state) => {
+    const econ = state.player.economy;
+    const global = state.globalSystems.trade || {};
+
+    let score = 50;
+
+    // Core economic indicators
+    score += (econ.gdpGrowth || 0) * 3;
+    if (typeof econ.unemployment === 'number') {
+      score -= Math.max(0, econ.unemployment - 4) * 2;
+    }
+    if (typeof econ.inflation === 'number') {
+      score -= Math.abs(econ.inflation - 2) * 1.5;
+    }
+    if (typeof econ.interestRate === 'number') {
+      score -= Math.abs(econ.interestRate - 2.5) * 1;
+    }
+
+    if (typeof econ.consumerConfidence === 'number') {
+      score += (econ.consumerConfidence - 50) * 0.2;
+    }
+    if (typeof econ.businessConfidence === 'number') {
+      score += (econ.businessConfidence - 50) * 0.2;
+    }
+    if (typeof econ.capacityUtilization === 'number') {
+      score += (econ.capacityUtilization - 75) * 0.3;
+    }
+    if (typeof econ.marketIndex === 'number') {
+      score += (econ.marketIndex - 100) * 0.1;
+    }
+    if (typeof econ.goldReserves === 'number') {
+      score += Math.min(10, econ.goldReserves / 5);
+    }
+    if (typeof econ.energyDependence === 'number') {
+      score -= econ.energyDependence * 0.1;
+    }
+    if (typeof econ.infrastructureQuality === 'number') {
+      score += (econ.infrastructureQuality - 50) * 0.2;
+    }
+
+    // Sector performance
+    if (econ.sectors) {
+      Object.values(econ.sectors).forEach(sec => {
+        if (typeof sec.growth === 'number' && typeof sec.size === 'number') {
+          score += sec.growth * (sec.size / 100) * 0.5;
+        }
+      });
+    }
+
+    // Fiscal position and debt load
+    if (typeof econ.treasury === 'number' && typeof econ.debt === 'number') {
+      score += Math.max(-15, Math.min(15, (econ.treasury - econ.debt) / 10));
+      if (typeof econ.gdp === 'number' && econ.gdp > 0) {
+        const debtRatio = (econ.debt / econ.gdp) * 100;
+        score -= Math.max(0, debtRatio - 60) * 0.1;
+      }
+    }
+
+    // Trade balance and global environment
+    if (econ.trade && typeof econ.trade.exports === 'number' && typeof econ.trade.imports === 'number') {
+      score += (econ.trade.exports - econ.trade.imports) * 0.4;
+      if (typeof econ.trade.tariffs === 'number') {
+        score -= Math.max(0, econ.trade.tariffs - 20) * 0.1;
+      }
+      if (Array.isArray(econ.trade.mainPartners)) {
+        score += (econ.trade.mainPartners.length - 3) * 1.5;
+      }
+    }
+    if (typeof global.protectionism === 'number') {
+      score -= (global.protectionism - 50) * 0.2;
+    }
+    score += (global.growth_rate || 0) * 0.5;
+    score += ((global.currency_stability || 50) - 50) * 0.1;
+    if (typeof global.commodity_index === 'number') {
+      score += (global.commodity_index - 50) * 0.1;
+    }
+    if (typeof global.financial_stability === 'number') {
+      score += (global.financial_stability - 50) * 0.2;
+    }
+
+    return Math.max(0, Math.min(100, Math.round(score)));
+  };
+
+  const calculateDiplomaticTrust = (state) => {
+    const relations = state.relationships.usa || {};
+    const ideologies = state.globalSystems.ideology;
+    let total = 0;
+    let weight = 0;
+
+    Object.entries(relations).forEach(([nation, rel]) => {
+      const baseWeight = ((rel.trade ?? 50) * 0.5 + (rel.value ?? 50) * 0.5) / 100;
+      let t = rel.trust ?? rel.value ?? 50;
+
+      if (Array.isArray(rel.treaties)) {
+        rel.treaties.forEach(tr => {
+          if (tr === 'alliance' || tr === 'mutualDefense') t += 20;
+          else if (tr === 'nonaggression') t += 10;
+          else if (tr === 'trade') t += 5;
+          else if (tr === 'sanctions' || tr === 'embargo') t -= 25;
+        });
+      }
+      if (rel.trend === 'improving') t += 10;
+      if (rel.trend === 'declining') t -= 10;
+      if (rel.trend === 'hostile') t -= 25;
+
+      const aligned = Object.values(ideologies).some(id => id.champions.includes('usa') && id.champions.includes(nation));
+      if (aligned) t += 5;
+
+      const importance = 1 + baseWeight + ((rel.treaties?.length || 0) * 0.2);
+      total += t * importance;
+      weight += importance;
+    });
+
+    if (weight === 0) return 50;
+    return Math.max(0, Math.min(100, Math.round(total / weight)));
+  };
+
+  const calculateWarReadiness = (state) => {
+    const mil = state.player.military;
+    const politics = state.player.politics;
+    const econ = state.player.economy;
+
+    let readiness = mil.readiness ?? 50;
+
+    // Military capabilities
+    readiness += (mil.totalStrength - 50) * 0.6;
+    readiness += ((mil.technology?.level || 50) - 50) * 0.4;
+    if (typeof mil.army?.equipment === 'number') {
+      readiness += (mil.army.equipment - 50) * 0.2;
+    }
+
+    // Political backing
+    readiness += (politics.publicSupport - 50) * 0.4;
+    readiness += (politics.congressSupport - 50) * 0.4;
+    const iso = politics.factions?.isolationists?.strength ?? 50;
+    readiness -= (iso - 50) * 0.5;
+    const inter = politics.factions?.interventionists?.strength ?? 50;
+    readiness += (inter - 50) * 0.3;
+
+    // Economic capacity to sustain conflict
+    if (econ.sectors?.manufacturing) {
+      const manuf = econ.sectors.manufacturing;
+      readiness += (manuf.size - 30) * 0.2;
+      readiness += manuf.growth * 0.3;
+    }
+    if (typeof econ.treasury === 'number' && typeof econ.debt === 'number') {
+      readiness += Math.min(15, (econ.treasury - econ.debt) / 5);
+    }
+    readiness += (econ.gdpGrowth || 0) * 1;
+    if (typeof econ.unemployment === 'number') {
+      readiness -= Math.max(0, econ.unemployment - 5) * 0.2;
+    }
+    if (typeof econ.inflation === 'number') {
+      readiness -= Math.max(0, Math.abs(econ.inflation) - 5) * 0.3;
+    }
+
+    return Math.max(0, Math.min(100, Math.round(readiness)));
   };
 
   const analyzeIdeologicalBalance = (state) => {
@@ -2484,6 +2776,7 @@ const AdvancedGeopoliticalSimulation = () => {
       <div className="max-w-7xl mx-auto p-6">
         {currentView === 'dashboard' && <DashboardView />}
         {currentView === 'decisions' && <DecisionView decisions={decisions} />}
+        {currentView === 'economy' && <EconomyView />}
         {currentView === 'timeline' && (
           <div className="card shadow-md">
             <h2 className="text-2xl font-bold mb-4">Timeline View - Coming Soon</h2>
