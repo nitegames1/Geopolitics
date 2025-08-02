@@ -3,5 +3,5 @@ import react from '@vitejs/plugin-react';
 
 export default defineConfig({
   base: '/Geopolitics/',
-  plugins: [react({ jsxRuntime: 'classic' })],
+  plugins: [react()],
 });
