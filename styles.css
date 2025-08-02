@@ -145,6 +145,11 @@ input[type='range'] {
   width: 100%;
 }
 
+/* Range slider */
+input[type='range'] {
+  width: 100%;
+}
+
 /* Reusable button styling */
 .btn {
   display: inline-flex;
