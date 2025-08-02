@@ -1,5 +1,5 @@
 // @ts-nocheck
-
+import { useState } from 'react';
 
 // ==== PERSISTENT WORLD ENGINE ====
 class WorldEngine {
