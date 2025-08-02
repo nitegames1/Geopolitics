@@ -1,8 +1,22 @@
+name: Generate test.yml workflow
 
+on:
+  push:
+    branches: ["main"]
+
+jobs:
+  generate-workflow:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Create test.yml file
+        run: |
+          mkdir -p .github/workflows
+          cat <<EOF > .github/workflows/test.yml
 name: Node.js CI
-
-name: Node CI
- main
 
 on:
   push:
@@ -11,39 +25,36 @@ on:
     branches: ["main"]
 
 jobs:
-  build:
+  build-and-test:
     runs-on: ubuntu-latest
+
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
 
-
-      - name: Setup Node.js
-        uses: actions/setup-node@v4
-        with:
-          node-version: 18
-    - name: Set up Node.js
+      - name: Set up Node.js
         uses: actions/setup-node@v4
         with:
           node-version: 18
           cache: 'npm'
- main
 
       - name: Install dependencies
         run: npm ci
 
- wr89mv-codex/remove-deno-workflow-and-add-node-workflow
-      - name: TypeScript check
-        run: npm run typecheck
-
-      - name: Build
-
-      - name: Type check
+      - name: TypeScript type check
         run: npm run typecheck
 
       - name: Run tests
         run: npm test
 
       - name: Build project
-main
         run: npm run build
+EOF
+
+      - name: Commit and push test.yml
+        run: |
+          git config user.name "github-actions"
+          git config user.email "github-actions@github.com"
+          git add .github/workflows/test.yml
+          git commit -m "Auto-generate test.yml workflow"
+          git push
