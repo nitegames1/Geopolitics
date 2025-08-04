@@ -1,26 +1,33 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Advanced Geopolitical Simulation</title>
+  <script crossorigin src="https://unpkg.com/react@18/umd/react.development.js"></script>
+  <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
+  <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="index.css">
+</head>
+<body class="bg-slate-900">
+  <div id="root"></div>
 
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <!-- Load our React component -->
+  <script type="text/babel" src="enhanced-geopolitical-sim.jsx"></script>
 
-
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
- main
- main
-    <title>Geopolitical Sim</title>
-    <link
-      href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700&family=EB+Garamond:wght@400;600&display=swap"
-      rel="stylesheet"
-    />
-    <link rel="stylesheet" href="styles.css" />
-    <script type="module" src="/main.tsx"></script>
-  </head>
-  <body>
-    <div id="root"></div>
-    <script type="module" src="/main.tsx"></script>
-  </body>
+  <!-- Bootstrap the React application once the DOM and global variables are available -->
+  <script type="text/babel">
+    window.addEventListener('DOMContentLoaded', function() {
+      const rootElement = document.getElementById('root');
+      if (window.AdvancedGeopoliticalSimulation && window.React && window.ReactDOM && rootElement) {
+        const root = ReactDOM.createRoot(rootElement);
+        root.render(React.createElement(window.AdvancedGeopoliticalSimulation));
+      } else {
+        rootElement.innerText = 'Component failed to load.';
+      }
+    });
+  </script>
+</body>
 </html>
+
