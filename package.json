@@ -1,30 +1,25 @@
 {
-  "name": "geopolitics",
-  "version": "1.0.0",
-  "homepage": "https://nitegames1.github.io/Geopolitics",
-  "description": "",
-  "scripts": {
-    "dev": "vite",
-    "build": "vite build",
-    "serve": "node server.js",
-    "typecheck": "tsc --noEmit",
-    "predeploy": "npm run build",
-    "deploy": "gh-pages -d dist",
-    "test": "vitest run"
-  },
+  "type": "module",
   "dependencies": {
-    "react": "^18.2.0",
-    "react-dom": "^18.2.0"
+    "@fortawesome/fontawesome-free": "6.7.2",
+    "@fortawesome/fontawesome-svg-core": "6.7.2",
+    "@fortawesome/free-brands-svg-icons": "6.7.2",
+    "@fortawesome/free-regular-svg-icons": "6.7.2",
+    "@fortawesome/free-solid-svg-icons": "6.7.2",
+    "@types/prismjs": "1.26.5",
+    "autoprefixer": "10.4.21",
+    "http-server": "14.1.1",
+    "image-size": "2.0.2",
+    "postcss": "8.5.6",
+    "pptxgenjs": "4.0.0",
+    "prismjs": "1.30.0",
+    "sharp": "0.34.1",
+    "tailwindcss": "4.1.10",
+    "ts-node": "10.9.2",
+    "typescript": "5.8.3"
   },
-  "devDependencies": {
-    "@types/node": "^24.1.0",
-    "@types/react": "^19.1.9",
-    "@types/react-dom": "^19.1.7",
-    "@vitejs/plugin-react": "^4.7.0",
-    "gh-pages": "^6.0.0",
-    "typescript": "^5.9.2",
-    "vite": "^5.4.19",
-    "vitest": "^1.6.1"
-  },
-  "type": "module"
+  "scripts": {
+    "start": "node server.js",
+    "build": "mkdir -p dist && cp index.html dist/index.html && cp index.css dist/index.css && cp enhanced-geopolitical-sim.jsx dist/enhanced-geopolitical-sim.jsx && cp index.js dist/index.js && cp server.js dist/server.js"
+  }
 }
