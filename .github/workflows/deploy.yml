@@ -1,8 +1,12 @@
 name: Deploy to GitHub Pages
 
+# Trigger on pushes to the main branch (you can add pull_request here if you want it to run on PRs too)
 on:
   push:
     branches: [main]
+  # Optional: Uncomment to build on pull requests without deploying
+  # pull_request:
+  #   branches: [main]
 
 permissions:
   contents: write
@@ -31,4 +35,6 @@ jobs:
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           publish_dir: ./dist
+          # Optional: Keep a history of deployments instead of force-pushing
+          # keep_history: true
 
