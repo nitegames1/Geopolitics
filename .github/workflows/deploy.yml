@@ -1,12 +1,8 @@
 name: Deploy to GitHub Pages
 
-# Trigger on pushes to the main branch (you can add pull_request here if you want it to run on PRs too)
 on:
   push:
     branches: [main]
-  # Optional: Uncomment to build on pull requests without deploying
-  # pull_request:
-  #   branches: [main]
 
 permissions:
   contents: write
@@ -14,7 +10,6 @@ permissions:
 jobs:
   build-and-deploy:
     runs-on: ubuntu-latest
-
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
@@ -27,14 +22,20 @@ jobs:
       - name: Install dependencies
         run: npm install
 
+      # For a plain HTML/JS project, this copies your files into a dist folder.
       - name: Build the project
-        run: npm run build
+        run: |
+          mkdir -p dist
+          cp index.html dist/index.html
+          cp index.css dist/index.css
+          cp enhanced-geopolitical-sim.jsx dist/enhanced-geopolitical-sim.jsx
+          cp index.js dist/index.js
+          cp server.js dist/server.js
 
       - name: Deploy to GitHub Pages
         uses: peaceiris/actions-gh-pages@v3
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           publish_dir: ./dist
-          # Optional: Keep a history of deployments instead of force-pushing
-          # keep_history: true
+
 
